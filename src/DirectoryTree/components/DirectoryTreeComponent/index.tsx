@@ -6,7 +6,6 @@ import { ChevronRight, ExpandMore } from "@material-ui/icons";
 import { TreeView } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import { IDirectoryTreeViewProps } from "../../interface";
-import { useDirectory } from "../../contexts/DirectoryTreeContext/DirectoryTreeContext";
 import RenderTreeItem from "./RenderTreeItem";
 
 export default function DirectoryTreeComponent(

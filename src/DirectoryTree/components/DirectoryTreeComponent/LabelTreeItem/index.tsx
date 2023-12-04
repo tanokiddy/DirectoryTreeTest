@@ -4,7 +4,6 @@ import { Checkbox, Typography } from "@material-ui/core";
 import React from "react";
 import { IConvertedData, ILabelTreeItemProps } from "../../../interface";
 import { IRawData } from "../../../component";
-import { useDirectory } from "../../../contexts/DirectoryTreeContext/DirectoryTreeContext";
 
 const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   const {

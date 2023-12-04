@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/prop-types */
 import { FolderOpen } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { handleConvertData, mockData } from "./utils";
-import { DirectoryProvider } from "./contexts/DirectoryTreeContext/DirectoryTreeContext";
 import DirectoryTreeComponent from "./components/DirectoryTreeComponent";
 
 export type IRawData = {
