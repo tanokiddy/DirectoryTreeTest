@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 export type IConvertedData<T> = T & {
   children?: IConvertedData<T>[] | [];
 };

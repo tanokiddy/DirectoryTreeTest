@@ -11,15 +11,14 @@ import {
   IConvertedData,
   IDirectoryActionComponentsProps,
 } from "../../interface";
-import { handleConvertData } from "../../utils";
 import React from "react";
-import { IRawData } from "../../component";
 
 type DirectoryProps = {
   onGetRawData: (id?: string) => Promise<any>;
   children: React.ReactNode;
   localCheckbox: string[];
   setLocalCheckbox: React.Dispatch<React.SetStateAction<string[]>>;
+  onConvertData: (data: any) => any
   startIcon?: JSX.Element;
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
 };
@@ -28,7 +27,8 @@ interface IContextValue {
   onClickTreeItem: (id?: string) => Promise<void>;
   localCheckbox: string[];
   setLocalCheckbox: Dispatch<SetStateAction<string[]>>;
-  convertedRootData: IConvertedData<IRawData>;
+  convertedRootData: IConvertedData<any>;
+  onConvertData?: (data: any) => any
   startIcon?: JSX.Element;
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
 }
@@ -41,6 +41,7 @@ export const DirectoryProvider = ({
   localCheckbox,
   setLocalCheckbox,
   startIcon,
+  onConvertData
 }: DirectoryProps) => {
 
   useEffect(() => {
@@ -74,7 +75,7 @@ export const DirectoryProvider = ({
 
   if (!rawData.length) return null;
 
-  const convertedRootData = handleConvertData(rawData)?.[0];
+  const convertedRootData = onConvertData(rawData)?.[0];
 
   const contextValue: IContextValue = {
     onClickTreeItem,

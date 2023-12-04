@@ -3,20 +3,22 @@
 import { Checkbox, Typography } from "@material-ui/core";
 import React from "react";
 import { IConvertedData, ILabelTreeItemProps } from "../../../interface";
-import { IRawData } from "../../../component";
 import { useDirectory } from "../../../contexts/DirectoryTreeContext/DirectoryTreeContext";
 
 const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
-  const {
-    convertedData,
-  } = props;
-  const { convertedRootData, localCheckbox, setLocalCheckbox, startIcon, directoryActionComponents } = useDirectory();
+  const { convertedData } = props;
 
-  console.log(localCheckbox);
+  const {
+    convertedRootData,
+    localCheckbox,
+    setLocalCheckbox,
+    startIcon,
+    directoryActionComponents,
+  } = useDirectory();
 
   const handleCheckFatherItem = (
-    parentData: IConvertedData<IRawData>,
-    convertedData: IConvertedData<IRawData>,
+    parentData: IConvertedData<any>,
+    convertedData: IConvertedData<any>,
     arr: string[]
   ) => {
     if (!parentData || !convertedData || !parentData.children) return;
@@ -26,7 +28,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
     );
 
     parentData.children?.forEach(
-      (parentDataChildren: IConvertedData<IRawData>) => {
+      (parentDataChildren: IConvertedData<any>) => {
         if (parentDataChildren.directoryId === convertedData.directoryId) {
           if (allChildrenChecked) {
             arr.push(parentData.directoryId);
@@ -40,13 +42,13 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   };
 
   const handleCheckIndeterminate = (
-    parentData: IConvertedData<IRawData>,
-    convertedData: IConvertedData<IRawData>,
+    parentData: IConvertedData<any>,
+    convertedData: IConvertedData<any>,
     arr: string[]
   ) => {
     if (!parentData?.directoryId || !convertedData?.directoryId) return;
     parentData.children?.forEach(
-      (parentDataChildren: IConvertedData<IRawData>) => {
+      (parentDataChildren: IConvertedData<any>) => {
         if (parentDataChildren.directoryId === convertedData.directoryId) {
           const idx = arr.findIndex((item) => item === parentData.directoryId);
           if (idx > -1) {
@@ -62,7 +64,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
 
   const handleRemoveCheckbox = (
     arr: string[],
-    convertedData: IConvertedData<IRawData>
+    convertedData: IConvertedData<any>
   ) => {
     const idx = arr.findIndex((item) => item === convertedData.directoryId);
     if (idx > -1) {
@@ -70,7 +72,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
     }
     if (!convertedData.children?.length) return;
     convertedData.children.forEach(
-      (convertedDataChildren: IConvertedData<IRawData>) => {
+      (convertedDataChildren: IConvertedData<any>) => {
         const idx = arr.findIndex(
           (item) => item === convertedDataChildren.directoryId
         );
@@ -84,10 +86,10 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
 
   const handleCheckNested = (
     arr: string[],
-    convertedData: IConvertedData<IRawData>
+    convertedData: IConvertedData<any>
   ) => {
     convertedData?.children?.forEach(
-      (convertedDataChildren: IConvertedData<IRawData>) => {
+      (convertedDataChildren: IConvertedData<any>) => {
         if (!arr.includes(convertedDataChildren.directoryId)) {
           arr.push(convertedDataChildren.directoryId);
           handleCheckNested(arr, convertedDataChildren);
@@ -100,7 +102,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
 
   const handleCheckbox = (
     e: React.ChangeEvent<HTMLInputElement>,
-    convertedData: IConvertedData<IRawData>
+    convertedData: IConvertedData<any>
   ) => {
     if (
       typeof localCheckbox === "undefined" ||
@@ -127,7 +129,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
     if (!convertedData.children?.length) return;
     //add nested
     convertedData.children.forEach(
-      (convertedDataChildren: IConvertedData<IRawData>) => {
+      (convertedDataChildren: IConvertedData<any>) => {
         if (!newLocalCheckbox.includes(convertedDataChildren.directoryId)) {
           newLocalCheckbox.push(convertedDataChildren.directoryId);
           handleCheckNested(newLocalCheckbox, convertedDataChildren);
@@ -139,7 +141,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   };
 
   const isIndeterminate = (
-    convertedData: IConvertedData<IRawData>
+    convertedData: IConvertedData<any>
   ): boolean => {
     if (!convertedData.children || convertedData.children.length === 0) {
       return false;

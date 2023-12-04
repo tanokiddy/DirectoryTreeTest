@@ -4,11 +4,8 @@ import LabelTreeItem from "../LabelTreeItem";
 import React from "react";
 import { TreeItem } from "@material-ui/lab";
 import { useDirectory } from "../../../contexts/DirectoryTreeContext/DirectoryTreeContext";
-import { IDirectoryActionComponentsProps } from "../../../interface";
 
 type RenderTreeItemProps = {
-  directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
-  startIcon?: JSX.Element;
   convertedData?: any;
 };
 
@@ -20,8 +17,9 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   return (
     <div>
       <TreeItem
-        key={convertedData?.directoryId}
-        nodeId={convertedData?.directoryId}
+        style={{userSelect: 'none'}}
+        key={convertedData.directoryId}
+        nodeId={convertedData.directoryId}
         label={<LabelTreeItem convertedData={convertedData} />}
         onClick={() => {
           typeof onClickTreeItem !== "undefined" &&

@@ -2,15 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { ChevronRight, ExpandMore } from "@material-ui/icons";
-import { TreeView } from "@material-ui/lab";
 import React from "react";
 import { IDirectoryTreeViewProps } from "../../interface";
-import {
-  DirectoryProvider,
-  useDirectory,
-} from "../../contexts/DirectoryTreeContext/DirectoryTreeContext";
-import RenderTreeItem from "./RenderTreeItem";
+import { DirectoryProvider } from "../../contexts/DirectoryTreeContext/DirectoryTreeContext";
 import TreeViewComponent from "./TreeViewComponent";
 
 export default function DirectoryTreeComponent(
@@ -38,12 +32,13 @@ export default function DirectoryTreeComponent(
   return (
     <DirectoryProvider
       onGetRawData={onGetRawData}
+      onConvertData={onConvertData}
       localCheckbox={localCheckbox}
       setLocalCheckbox={setLocalCheckbox}
       startIcon={startIcon}
       directoryActionComponents={directoryActionComponents}
     >
-      <TreeViewComponent/>
+      <TreeViewComponent />
     </DirectoryProvider>
   );
 }

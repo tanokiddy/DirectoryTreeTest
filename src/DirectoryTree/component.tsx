@@ -40,7 +40,6 @@ const handleConvertData = (
 
 export default function TreeViewTest() {
   const [localCheckbox, setLocalCheckbox] = useState<string[]>([])
-  console.log('localCheckbox: ', localCheckbox);
 
   const onGetRawData = async (id = "100") => {
     const res = await fetch(mockData[id]);
