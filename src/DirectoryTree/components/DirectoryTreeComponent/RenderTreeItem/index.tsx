@@ -55,7 +55,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
                 <RenderTreeItem
                   key={convertedDataChildren.directoryId}
                   convertedData={convertedDataChildren}
-                  rootData={convertedData}
+                  rootData={rootData}
                   checkboxItems={checkboxItems}
                   setCheckboxItems={setCheckboxItems}
                   directoryActionComponents={directoryActionComponents}

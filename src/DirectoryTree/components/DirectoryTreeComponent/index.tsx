@@ -16,8 +16,8 @@ export default function DirectoryTreeComponent(
     defaultCollapseIcon,
     defaultExpandIcon,
     defaultExpanded,
-    directoryActionComponents,
     startIcon,
+    directoryActionComponents,
     checkboxItems,
     setCheckboxItems,
     onGetRawData,
@@ -37,7 +37,7 @@ export default function DirectoryTreeComponent(
   }, []);
 
   const onClickTreeItem = async (id?: string) => {
-    if (!id || calledApiItems.includes(id) || (id !=='11' || '900' || '11' || "5036872129342215728")) return;
+    if (!id || calledApiItems.includes(id)) return;
     const newDataApi = await onGetRawData(id);
     const concatRawDataWithDataAPI = rawData.concat(newDataApi);
     const newRawData = concatRawDataWithDataAPI.filter(
@@ -70,6 +70,7 @@ export default function DirectoryTreeComponent(
         setCheckboxItems={setCheckboxItems}
         directoryActionComponents={directoryActionComponents}
         convertedData={convertedData}
+        rootData={convertedData}
         onClickTreeItem={onClickTreeItem}
         {...rest}
       />

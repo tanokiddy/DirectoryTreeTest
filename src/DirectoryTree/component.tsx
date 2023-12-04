@@ -21,6 +21,7 @@ export type IRawData = {
 
 export default function TreeViewTest() {
   const [checkboxItems, setCheckboxItems] = useState<string[]>([]);
+  console.log('checkboxItems: ', checkboxItems);
 
   const onGetRawData = async (id = "100") => {
     const res = await fetch(mockData[id]);
