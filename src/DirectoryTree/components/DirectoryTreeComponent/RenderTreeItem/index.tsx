@@ -13,24 +13,24 @@ type RenderTreeItemProps = {
 };
 
 const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
-  const { convertedData, ...rest } = props;
+  const { convertedData } = props;
 
-  const { onClickTreeItem, convertedRootData } = useDirectory();
+  const { onClickTreeItem } = useDirectory();
 
   return (
     <div>
       <TreeItem
-        key={convertedData?.directoryId || convertedRootData.directoryId}
-        nodeId={convertedData?.directoryId || convertedRootData.directoryId}
-        label={<LabelTreeItem convertedData={convertedData || convertedRootData} />}
+        key={convertedData?.directoryId}
+        nodeId={convertedData?.directoryId}
+        label={<LabelTreeItem convertedData={convertedData} />}
         onClick={() => {
           typeof onClickTreeItem !== "undefined" &&
-            onClickTreeItem(convertedData.directoryId || convertedRootData.directoryId);
+            onClickTreeItem(convertedData.directoryId);
         }}
       >
-        {Array.isArray(convertedRootData.children) &&
-        convertedRootData.children.length > 0
-          ? convertedRootData.children.map((convertedDataChildren: any) => {
+        {Array.isArray(convertedData.children) &&
+        convertedData.children.length > 0
+          ? convertedData.children.map((convertedDataChildren: any) => {
               return (
                 <RenderTreeItem
                   key={convertedDataChildren.directoryId}
