@@ -1,33 +1,56 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
-import { IConvertedData } from "../../interface";
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import {
+  IConvertedData,
+  IDirectoryActionComponentsProps,
+} from "../../interface";
 import { handleConvertData } from "../../utils";
 import React from "react";
 import { IRawData } from "../../component";
 
 type DirectoryProps = {
-    onGetRawData: (id?: string) => Promise<any>
-    children: React.ReactNode
-}
+  onGetRawData: (id?: string) => Promise<any>;
+  children: React.ReactNode;
+  localCheckbox: string[];
+  setLocalCheckbox: React.Dispatch<React.SetStateAction<string[]>>;
+  startIcon?: JSX.Element;
+  directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
+};
 
 interface IContextValue {
-    onClickTreeItem: (id?: string) => Promise<void>,
-    localCheckbox: string[]
-    setLocalCheckbox: Dispatch<SetStateAction<string[]>>
-    rawData: IRawData[],
-    convertedRootData: IConvertedData<IRawData>
+  onClickTreeItem: (id?: string) => Promise<void>;
+  rawData: IRawData[];
+  localCheckbox: string[];
+  setLocalCheckbox: Dispatch<SetStateAction<string[]>>;
+  convertedRootData: IConvertedData<IRawData>;
+  startIcon?: JSX.Element;
+  directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
 }
 
-const DirectoryContext  = createContext<IContextValue | null>(null)
+const DirectoryContext = createContext<IContextValue | null>(null);
 
-export const DirectoryProvider = ({onGetRawData, children}: DirectoryProps) => {
+export const DirectoryProvider = ({
+  onGetRawData,
+  children,
+  localCheckbox,
+  setLocalCheckbox,
+  startIcon,
+}: DirectoryProps) => {
+
   useEffect(() => {
     const fetchAPI = async () => {
       const rawData = await onGetRawData();
       setRawData(rawData);
-      const newCalledApiItems = [...calledApiItems]
-      newCalledApiItems.push(rawData[0].directoryId)
-      setCalledApiItems(newCalledApiItems)
+      const newCalledApiItems = [...calledApiItems];
+      newCalledApiItems.push(rawData[0].directoryId);
+      setCalledApiItems(newCalledApiItems);
     };
     fetchAPI();
   }, []);
@@ -49,7 +72,6 @@ export const DirectoryProvider = ({onGetRawData, children}: DirectoryProps) => {
 
   const [rawData, setRawData] = useState<any>([]);
   const [calledApiItems, setCalledApiItems] = useState<string[]>([]);
-  const [localCheckbox, setLocalCheckbox] = useState<string[]>([])
 
   if (!rawData.length) return null;
 
@@ -60,22 +82,23 @@ export const DirectoryProvider = ({onGetRawData, children}: DirectoryProps) => {
     localCheckbox,
     setLocalCheckbox,
     rawData,
-    convertedRootData
-  }
+    convertedRootData,
+    startIcon,
+  };
 
   return (
     <DirectoryContext.Provider value={contextValue}>
-        {children}
+      {children}
     </DirectoryContext.Provider>
-  )
-}
+  );
+};
 
 export const useDirectory = () => {
-  const directory = useContext(DirectoryContext)
+  const directory = useContext(DirectoryContext);
   if (!directory) {
-		throw Error(
-			'__ERROR__: usedirectory must be inside a directoryProvider with a value'
-		)
-	}
-  return directory
-}
+    throw Error(
+      "__ERROR__: usedirectory must be inside a directoryProvider with a value"
+    );
+  }
+  return directory;
+};

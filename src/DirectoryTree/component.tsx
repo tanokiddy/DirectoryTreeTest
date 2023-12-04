@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/prop-types */
 import { FolderOpen } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
-import { handleConvertData, mockData } from "./utils";
-import { DirectoryProvider } from "./contexts/DirectoryTreeContext/DirectoryTreeContext";
+import React, { useState } from "react";
+import { mockData } from "./utils";
 import DirectoryTreeComponent from "./components/DirectoryTreeComponent";
+import { IConvertedData } from "./interface";
 
 export type IRawData = {
   description: null | string;
@@ -19,8 +19,27 @@ export type IRawData = {
   order: number;
 };
 
+const handleConvertData = (
+  input: IConvertedData<any>[],
+  parentId = input?.[0].parentDirectoryId
+) => {
+  if (Array.isArray(input)) {
+    const result: IConvertedData<any>[] = [];
+
+    for (let i = 0; i < input.length; i++) {
+      if (input[i].parentDirectoryId === parentId) {
+        const newItem = { ...input[i] };
+        newItem.children = handleConvertData(input, newItem.directoryId);
+
+        result.push(newItem);
+      }
+    }
+    return result;
+  }
+};
+
 export default function TreeViewTest() {
-  const [checkboxItems, setCheckboxItems] = useState<string[]>([]);
+  const [localCheckbox, setLocalCheckbox] = useState<string[]>([])
 
   const onGetRawData = async (id = "100") => {
     const res = await fetch(mockData[id]);
@@ -29,14 +48,12 @@ export default function TreeViewTest() {
   };
 
   return (
-    <DirectoryProvider onGetRawData={onGetRawData}>
-      <DirectoryTreeComponent
-        onConvertData={handleConvertData}
-        onGetRawData={onGetRawData}
-        startIcon={<FolderOpen />}
-        setCheckboxItems={setCheckboxItems}
-        checkboxItems={checkboxItems}
-      />
-    </DirectoryProvider>
+    <DirectoryTreeComponent
+      onConvertData={handleConvertData}
+      onGetRawData={onGetRawData}
+      startIcon={<FolderOpen />}
+      setLocalCheckbox={setLocalCheckbox}
+      localCheckbox={localCheckbox}
+    />
   );
 }

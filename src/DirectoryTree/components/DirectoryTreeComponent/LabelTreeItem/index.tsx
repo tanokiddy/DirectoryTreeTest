@@ -9,15 +9,8 @@ import { useDirectory } from "../../../contexts/DirectoryTreeContext/DirectoryTr
 const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   const {
     convertedData,
-    startIcon,
-    directoryActionComponents,
-    // checkboxItems,
-    // setCheckboxItems,
-    // localCheckbox,
-    // setLocalCheckbox,
-    // rootData,
   } = props;
-  const { convertedRootData, localCheckbox, setLocalCheckbox } = useDirectory();
+  const { convertedRootData, localCheckbox, setLocalCheckbox, startIcon, directoryActionComponents } = useDirectory();
 
   console.log(localCheckbox);
 

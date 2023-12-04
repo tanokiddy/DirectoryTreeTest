@@ -13,24 +13,16 @@ export interface IDirectoryTreeViewProps<T> {
   defaultExpandIcon?: JSX.Element;
   defaultExpanded?: string[];
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
-  checkboxItems?: string[];
-  setCheckboxItems?: (checkboxItem: string[]) => void;
+  localCheckbox?: string[];
+  setLocalCheckbox?: React.Dispatch<React.SetStateAction<string[]>>
   // onGetConvertedData: (id?: string) => T;
   onConvertData: (rawData?: any) => any
   onGetRawData: (id?: string) => T,
 }
-export type ILabelTreeItemProps<T> = Pick<
-  IDirectoryTreeViewProps<T>,
-  | "startIcon"
-  | "directoryActionComponents"
-  | "checkboxItems"
-  | "setCheckboxItems"
-> & {
+export type ILabelTreeItemProps<T> = {
   convertedData?: T;
-  localCheckbox?: string[]
-  setLocalCheckbox?: Dispatch<SetStateAction<string[]>>
-  // rootData: T
 };
+
 export type IHandleCheckBox<T> = (
   e: React.ChangeEvent<HTMLInputElement>,
   data: IConvertedData<T>
