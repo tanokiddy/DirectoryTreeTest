@@ -12,13 +12,15 @@ export interface IDirectoryTreeViewProps<T> {
   defaultExpanded?: string[];
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
   localCheckbox?: string[];
-  setLocalCheckbox?: React.Dispatch<React.SetStateAction<string[]>>
+  setLocalCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
   // onGetConvertedData: (id?: string) => T;
-  onConvertData: (rawData?: any) => any
-  onGetRawData: (id?: string) => T,
+  onConvertData: (rawData?: any) => any;
+  onGetRawData: (id?: string) => T;
 }
 export type ILabelTreeItemProps<T> = {
   convertedData?: T;
+  handleCheckbox: (v: boolean, convertedData: IConvertedData<any>) => void;
+  isIndeterminate: (convertedData: any) => boolean
 };
 
 export type IHandleCheckBox<T> = (
