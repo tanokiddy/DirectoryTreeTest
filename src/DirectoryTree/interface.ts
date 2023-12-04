@@ -15,7 +15,6 @@ export interface IDirectoryTreeViewProps<T> {
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
   checkboxItems?: string[];
   setCheckboxItems?: (checkboxItem: string[]) => void;
-  // onGetConvertedData: (id?: string) => T;
   onConvertData: (rawData?: any) => any
   onGetRawData: (id?: string) => T,
 }
@@ -29,7 +28,7 @@ export type ILabelTreeItemProps<T> = Pick<
   convertedData?: T;
   localCheckbox?: string[]
   setLocalCheckbox?: Dispatch<SetStateAction<string[]>>
-  // rootData: T
+  rootData: T
 };
 export type IHandleCheckBox<T> = (
   e: React.ChangeEvent<HTMLInputElement>,

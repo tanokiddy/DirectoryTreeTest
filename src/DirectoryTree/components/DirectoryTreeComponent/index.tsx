@@ -25,40 +25,37 @@ export default function DirectoryTreeComponent(
     ...rest
   } = props;
 
-  // useEffect(() => {
-  //   const fetchAPI = async () => {
-  //     const rawData = await onGetRawData();
-  //     setRawData(rawData);
-  //     const newCalledApiItems = [...calledApiItems];
-  //     newCalledApiItems.push(rawData[0].directoryId);
-  //     setCalledApiItems(newCalledApiItems);
-  //   };
-  //   fetchAPI();
-  // }, []);
+  useEffect(() => {
+    const fetchAPI = async () => {
+      const rawData = await onGetRawData();
+      setRawData(rawData);
+      const newCalledApiItems = [...calledApiItems];
+      newCalledApiItems.push(rawData[0].directoryId);
+      setCalledApiItems(newCalledApiItems);
+    };
+    fetchAPI();
+  }, []);
 
-  // const onClickTreeItem = async (id?: string) => {
-  //   if (!id || calledApiItems.includes(id) || (id !=='11' || '900' || '11' || "5036872129342215728")) return;
-  //   const newDataApi = await onGetRawData(id);
-  //   const concatRawDataWithDataAPI = rawData.concat(newDataApi);
-  //   const newRawData = concatRawDataWithDataAPI.filter(
-  //     (item: any, index: number, array: any[]) =>
-  //       array.findIndex((t: any) => t.directoryId === item.directoryId) ===
-  //       index
-  //   );
-  //   setRawData(newRawData);
-  //   const newCalledApiItems = [...calledApiItems];
-  //   newCalledApiItems.push(id);
-  //   setCalledApiItems(newCalledApiItems);
-  // };
+  const onClickTreeItem = async (id?: string) => {
+    if (!id || calledApiItems.includes(id) || (id !=='11' || '900' || '11' || "5036872129342215728")) return;
+    const newDataApi = await onGetRawData(id);
+    const concatRawDataWithDataAPI = rawData.concat(newDataApi);
+    const newRawData = concatRawDataWithDataAPI.filter(
+      (item: any, index: number, array: any[]) =>
+        array.findIndex((t: any) => t.directoryId === item.directoryId) ===
+        index
+    );
+    setRawData(newRawData);
+    const newCalledApiItems = [...calledApiItems];
+    newCalledApiItems.push(id);
+    setCalledApiItems(newCalledApiItems);
+  };
 
-  // const [rawData, setRawData] = useState<any>([]);
-  // const [calledApiItems, setCalledApiItems] = useState<string[]>([]);
-  // const [localCheckbox, setLocalCheckbox] = useState<string[]>([]);
+  const [rawData, setRawData] = useState<any>([]);
+  const [calledApiItems, setCalledApiItems] = useState<string[]>([]);
 
-  // if (!rawData.length) return null;
-  // const convertedData = onConvertData(rawData)?.[0];
-
-  const {convertedRootData} = useDirectory()
+  if (!rawData.length) return null;
+  const convertedData = onConvertData(rawData)?.[0];
 
   return (
     <TreeView
@@ -72,10 +69,8 @@ export default function DirectoryTreeComponent(
         checkboxItems={checkboxItems}
         setCheckboxItems={setCheckboxItems}
         directoryActionComponents={directoryActionComponents}
-        convertedData={convertedRootData}
-        // onClickTreeItem={onClickTreeItem}
-        // localCheckbox={localCheckbox}
-        // setLocalCheckbox={setLocalCheckbox}
+        convertedData={convertedData}
+        onClickTreeItem={onClickTreeItem}
         {...rest}
       />
     </TreeView>

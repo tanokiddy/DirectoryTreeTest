@@ -1,15 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import LabelTreeItem from "../LabelTreeItem";
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React from "react";
 import { TreeItem } from "@material-ui/lab";
-import { useDirectory } from "../../../contexts/DirectoryTreeContext/DirectoryTreeContext";
 import { IDirectoryActionComponentsProps } from "../../../interface";
 
 type RenderTreeItemProps = {
@@ -18,9 +11,8 @@ type RenderTreeItemProps = {
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
   startIcon?: JSX.Element;
   convertedData?: any;
-  // onClickTreeItem?: (id: string) => Promise<void>;
-  // localCheckbox?: string[];
-  // setLocalCheckbox?: Dispatch<SetStateAction<string[]>>;
+  onClickTreeItem?: (id: string) => Promise<void>;
+  rootData?: any
 };
 
 const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
@@ -30,13 +22,10 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     directoryActionComponents,
     startIcon,
     convertedData,
-    // onClickTreeItem,
-    // localCheckbox,
-    // setLocalCheckbox,
+    onClickTreeItem,
+    rootData,
     ...rest
   } = props;
-
-  const {onClickTreeItem} = useDirectory()
 
   return (
     <div>
@@ -45,13 +34,12 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
         nodeId={convertedData.directoryId}
         label={
           <LabelTreeItem
-            // startIcon={startIcon}
+            startIcon={startIcon}
             convertedData={convertedData}
             checkboxItems={checkboxItems}
             setCheckboxItems={setCheckboxItems}
             directoryActionComponents={directoryActionComponents}
-            // localCheckbox={localCheckbox}
-            // setLocalCheckbox={setLocalCheckbox}
+            rootData={rootData}
           />
         }
         onClick={() => {
@@ -67,12 +55,11 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
                 <RenderTreeItem
                   key={convertedDataChildren.directoryId}
                   convertedData={convertedDataChildren}
+                  rootData={convertedData}
                   checkboxItems={checkboxItems}
                   setCheckboxItems={setCheckboxItems}
                   directoryActionComponents={directoryActionComponents}
-                  // onClickTreeItem={onClickTreeItem}
-                  // localCheckbox={localCheckbox}
-                  // setLocalCheckbox={setLocalCheckbox}
+                  onClickTreeItem={onClickTreeItem}
                 />
               );
             })

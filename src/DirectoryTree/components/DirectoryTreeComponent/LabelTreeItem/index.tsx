@@ -11,15 +11,10 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
     convertedData,
     startIcon,
     directoryActionComponents,
-    // checkboxItems,
-    // setCheckboxItems,
-    // localCheckbox,
-    // setLocalCheckbox,
-    // rootData,
+    checkboxItems,
+    setCheckboxItems,
+    rootData,
   } = props;
-  const { convertedRootData, localCheckbox, setLocalCheckbox } = useDirectory();
-
-  console.log(localCheckbox);
 
   const handleCheckFatherItem = (
     parentData: IConvertedData<IRawData>,
@@ -37,7 +32,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
         if (parentDataChildren.directoryId === convertedData.directoryId) {
           if (allChildrenChecked) {
             arr.push(parentData.directoryId);
-            handleCheckFatherItem(convertedRootData, parentData, arr);
+            handleCheckFatherItem(rootData, parentData, arr);
           }
           return;
         }
@@ -58,7 +53,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
           const idx = arr.findIndex((item) => item === parentData.directoryId);
           if (idx > -1) {
             arr.splice(idx, 1);
-            handleCheckIndeterminate(convertedRootData, parentData, arr);
+            handleCheckIndeterminate(rootData, parentData, arr);
           }
           return;
         }
@@ -110,17 +105,17 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
     convertedData: IConvertedData<IRawData>
   ) => {
     if (
-      typeof localCheckbox === "undefined" ||
-      typeof setLocalCheckbox === "undefined"
+      typeof checkboxItems === "undefined" ||
+      typeof setCheckboxItems === "undefined"
     )
       return;
-    let newLocalCheckbox = [...localCheckbox];
+    let newLocalCheckbox = [...checkboxItems];
     //remove nested
     if (!e.target?.checked) {
       handleRemoveCheckbox(newLocalCheckbox, convertedData);
-      setLocalCheckbox(newLocalCheckbox);
+      setCheckboxItems(newLocalCheckbox);
       handleCheckIndeterminate(
-        convertedRootData,
+        rootData,
         convertedData,
         newLocalCheckbox
       );
@@ -128,8 +123,8 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
     }
     //add
     newLocalCheckbox.push(convertedData.directoryId);
-    handleCheckFatherItem(convertedRootData, convertedData, newLocalCheckbox);
-    setLocalCheckbox(newLocalCheckbox);
+    handleCheckFatherItem(rootData, convertedData, newLocalCheckbox);
+    setCheckboxItems(newLocalCheckbox);
 
     if (!convertedData.children?.length) return;
     //add nested
@@ -148,16 +143,16 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   const isIndeterminate = (
     convertedData: IConvertedData<IRawData>
   ): boolean => {
-    if (!convertedData.children || convertedData.children.length === 0) {
+    if (!convertedData.children || convertedData.children.length === 0 || checkboxItems === undefined) {
       return false;
     }
 
     const allChildrenChecked = convertedData.children.every((child) =>
-      localCheckbox.includes(child.directoryId)
+      checkboxItems.includes(child.directoryId)
     );
 
     const someChildrenChecked = convertedData.children.some((child) =>
-      localCheckbox.includes(child.directoryId)
+      checkboxItems.includes(child.directoryId)
     );
 
     const someDescendantChecked = convertedData.children.some((child) =>
@@ -177,8 +172,8 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
         gap: 10,
       }}
     >
-      {typeof localCheckbox !== "undefined" &&
-      typeof setLocalCheckbox !== "undefined" ? (
+      {typeof checkboxItems !== "undefined" &&
+      typeof setCheckboxItems !== "undefined" ? (
         <Typography>
           {convertedData.children !== undefined ? (
             <Checkbox
@@ -187,7 +182,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
               onChange={(e) => {
                 handleCheckbox(e, convertedData);
               }}
-              checked={localCheckbox.includes(convertedData.directoryId)}
+              checked={checkboxItems.includes(convertedData.directoryId)}
               indeterminate={isIndeterminate(convertedData)}
             />
           ) : (
@@ -197,7 +192,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
               onChange={(e) => {
                 handleCheckbox(e, convertedData);
               }}
-              checked={localCheckbox.includes(convertedData.directoryId)}
+              checked={checkboxItems.includes(convertedData.directoryId)}
             />
           )}
         </Typography>

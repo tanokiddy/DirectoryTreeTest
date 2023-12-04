@@ -29,7 +29,6 @@ export default function TreeViewTest() {
   };
 
   return (
-    <DirectoryProvider onGetRawData={onGetRawData}>
       <DirectoryTreeComponent
         onConvertData={handleConvertData}
         onGetRawData={onGetRawData}
@@ -37,6 +36,5 @@ export default function TreeViewTest() {
         setCheckboxItems={setCheckboxItems}
         checkboxItems={checkboxItems}
       />
-    </DirectoryProvider>
   );
 }
