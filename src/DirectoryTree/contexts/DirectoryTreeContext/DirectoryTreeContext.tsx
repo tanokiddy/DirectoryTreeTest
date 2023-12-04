@@ -26,7 +26,6 @@ type DirectoryProps = {
 
 interface IContextValue {
   onClickTreeItem: (id?: string) => Promise<void>;
-  rawData: IRawData[];
   localCheckbox: string[];
   setLocalCheckbox: Dispatch<SetStateAction<string[]>>;
   convertedRootData: IConvertedData<IRawData>;
@@ -81,7 +80,6 @@ export const DirectoryProvider = ({
     onClickTreeItem,
     localCheckbox,
     setLocalCheckbox,
-    rawData,
     convertedRootData,
     startIcon,
   };
@@ -97,7 +95,7 @@ export const useDirectory = () => {
   const directory = useContext(DirectoryContext);
   if (!directory) {
     throw Error(
-      "__ERROR__: usedirectory must be inside a directoryProvider with a value"
+      "__ERROR__: useDirectory must be inside a DirectoryProvider with a value"
     );
   }
   return directory;
