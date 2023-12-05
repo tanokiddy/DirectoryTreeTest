@@ -16,26 +16,26 @@ export default function DirectoryTreeComponent(
     defaultExpanded,
     directoryActionComponents,
     startIcon,
-    localCheckbox,
-    setLocalCheckbox,
+    checkboxItems,
+    setCheckboxItems,
     onGetRawData,
     onConvertData,
     ...rest
   } = props;
 
   if (
-    typeof localCheckbox === "undefined" ||
-    typeof setLocalCheckbox === "undefined"
+    typeof checkboxItems === "undefined" ||
+    typeof setCheckboxItems === "undefined"
   )
     return null;
 
   return (
     <DirectoryProvider
+      startIcon={startIcon}
       onGetRawData={onGetRawData}
       onConvertData={onConvertData}
-      localCheckbox={localCheckbox}
-      setLocalCheckbox={setLocalCheckbox}
-      startIcon={startIcon}
+      checkboxItems={checkboxItems}
+      setCheckboxItems={setCheckboxItems}
       directoryActionComponents={directoryActionComponents}
     >
       <TreeViewComponent />

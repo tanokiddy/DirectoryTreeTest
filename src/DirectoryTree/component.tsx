@@ -39,7 +39,7 @@ const handleConvertData = (
 };
 
 export default function TreeViewTest() {
-  const [localCheckbox, setLocalCheckbox] = useState<string[]>([])
+  const [checkboxItems, setCheckboxItems] = useState<string[]>([])
 
   const onGetRawData = async (id = "100") => {
     const res = await fetch(mockData[id]);
@@ -52,8 +52,8 @@ export default function TreeViewTest() {
       onConvertData={handleConvertData}
       onGetRawData={onGetRawData}
       startIcon={<FolderOpen />}
-      setLocalCheckbox={setLocalCheckbox}
-      localCheckbox={localCheckbox}
+      setCheckboxItems={setCheckboxItems}
+      checkboxItems={checkboxItems}
     />
   );
 }

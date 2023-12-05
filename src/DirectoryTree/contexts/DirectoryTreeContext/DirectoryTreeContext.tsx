@@ -16,8 +16,8 @@ import React from "react";
 type DirectoryProps = {
   onGetRawData: (id?: string) => Promise<any>;
   children: React.ReactNode;
-  localCheckbox: string[];
-  setLocalCheckbox: React.Dispatch<React.SetStateAction<string[]>>;
+  checkboxItems: string[];
+  setCheckboxItems: React.Dispatch<React.SetStateAction<string[]>>;
   onConvertData: (data: any) => any
   startIcon?: JSX.Element;
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
@@ -25,8 +25,8 @@ type DirectoryProps = {
 
 interface IContextValue {
   onClickTreeItem: (id?: string) => Promise<void>;
-  localCheckbox: string[];
-  setLocalCheckbox: Dispatch<SetStateAction<string[]>>;
+  checkboxItems: string[];
+  setCheckboxItems: Dispatch<SetStateAction<string[]>>;
   convertedRootData: IConvertedData<any>;
   onConvertData?: (data: any) => any
   startIcon?: JSX.Element;
@@ -37,11 +37,11 @@ const DirectoryContext = createContext<IContextValue | null>(null);
 
 export const DirectoryProvider = ({
   onGetRawData,
-  children,
-  localCheckbox,
-  setLocalCheckbox,
+  checkboxItems,
+  setCheckboxItems,
   startIcon,
-  onConvertData
+  onConvertData,
+  children,
 }: DirectoryProps) => {
 
   useEffect(() => {
@@ -79,8 +79,8 @@ export const DirectoryProvider = ({
 
   const contextValue: IContextValue = {
     onClickTreeItem,
-    localCheckbox,
-    setLocalCheckbox,
+    checkboxItems,
+    setCheckboxItems,
     convertedRootData,
     startIcon,
   };

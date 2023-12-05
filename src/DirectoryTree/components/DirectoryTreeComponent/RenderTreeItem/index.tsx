@@ -15,8 +15,8 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
 
   const {
     convertedRootData,
-    localCheckbox,
-    setLocalCheckbox,
+    checkboxItems,
+    setCheckboxItems,
     onClickTreeItem,
   } = useDirectory();
 
@@ -107,34 +107,34 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     convertedData: IConvertedData<any>
   ) => {
     if (
-      typeof localCheckbox === "undefined" ||
-      typeof setLocalCheckbox === "undefined"
+      typeof checkboxItems === "undefined" ||
+      typeof setCheckboxItems === "undefined"
     )
       return;
-    let newLocalCheckbox = [...localCheckbox];
+    let newcheckboxItems = [...checkboxItems];
     //remove nested
     if (!v) {
-      handleRemoveCheckbox(newLocalCheckbox, convertedData);
-      setLocalCheckbox(newLocalCheckbox);
+      handleRemoveCheckbox(newcheckboxItems, convertedData);
+      setCheckboxItems(newcheckboxItems);
       handleCheckIndeterminate(
         convertedRootData,
         convertedData,
-        newLocalCheckbox
+        newcheckboxItems
       );
       return;
     }
     //add
-    newLocalCheckbox.push(convertedData.directoryId);
-    handleCheckFatherItem(convertedRootData, convertedData, newLocalCheckbox);
-    setLocalCheckbox(newLocalCheckbox);
+    newcheckboxItems.push(convertedData.directoryId);
+    handleCheckFatherItem(convertedRootData, convertedData, newcheckboxItems);
+    setCheckboxItems(newcheckboxItems);
 
     if (!convertedData.children?.length) return;
     //add nested
     convertedData.children.forEach(
       (convertedDataChildren: IConvertedData<any>) => {
-        if (!newLocalCheckbox.includes(convertedDataChildren.directoryId)) {
-          newLocalCheckbox.push(convertedDataChildren.directoryId);
-          handleCheckNested(newLocalCheckbox, convertedDataChildren);
+        if (!newcheckboxItems.includes(convertedDataChildren.directoryId)) {
+          newcheckboxItems.push(convertedDataChildren.directoryId);
+          handleCheckNested(newcheckboxItems, convertedDataChildren);
         } else {
           return;
         }
@@ -148,11 +148,11 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     }
 
     const allChildrenChecked = convertedData.children.every((child) =>
-      localCheckbox.includes(child.directoryId)
+      checkboxItems.includes(child.directoryId)
     );
 
     const someChildrenChecked = convertedData.children.some((child) =>
-      localCheckbox.includes(child.directoryId)
+      checkboxItems.includes(child.directoryId)
     );
 
     const someDescendantChecked = convertedData.children.some((child) =>

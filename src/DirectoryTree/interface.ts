@@ -11,8 +11,8 @@ export interface IDirectoryTreeViewProps<T> {
   defaultExpandIcon?: JSX.Element;
   defaultExpanded?: string[];
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
-  localCheckbox?: string[];
-  setLocalCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
+  checkboxItems?: string[];
+  setCheckboxItems?: React.Dispatch<React.SetStateAction<string[]>>;
   // onGetConvertedData: (id?: string) => T;
   onConvertData: (rawData?: any) => any;
   onGetRawData: (id?: string) => T;

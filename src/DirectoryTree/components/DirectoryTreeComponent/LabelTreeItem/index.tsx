@@ -9,10 +9,10 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   const { convertedData, handleCheckbox, isIndeterminate } = props;
 
   const {
-    localCheckbox,
-    setLocalCheckbox,
     startIcon,
     directoryActionComponents,
+    checkboxItems,
+    setCheckboxItems,
   } = useDirectory();
 
   return (
@@ -23,8 +23,8 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
         gap: 10,
       }}
     >
-      {typeof localCheckbox !== "undefined" &&
-      typeof setLocalCheckbox !== "undefined" ? (
+      {typeof checkboxItems !== "undefined" &&
+      typeof setCheckboxItems !== "undefined" ? (
         <Typography>
           <Checkbox
             onClick={(e) => e.stopPropagation()}
@@ -32,7 +32,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
             onChange={(e, v) => {
               handleCheckbox(v, convertedData);
             }}
-            checked={localCheckbox.includes(convertedData.directoryId)}
+            checked={checkboxItems.includes(convertedData.directoryId)}
             indeterminate={
               convertedData.children !== undefined &&
               isIndeterminate(convertedData)
