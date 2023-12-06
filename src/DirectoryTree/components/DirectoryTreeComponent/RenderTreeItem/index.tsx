@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import LabelTreeItem from "../LabelTreeItem";
-import React from "react";
+import React, { useEffect } from "react";
 import { TreeItem } from "@material-ui/lab";
 import { IConvertedData } from "../../../interface";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { calledApiState, checkboxState, onClickTreeState, rawDataState, rootConvertedState } from "../../../recoil/atom";
+import { calledApiState, checkboxState, rawDataState, rootConvertedState } from "../../../recoil/atom";
 
 type RenderTreeItemProps = {
   convertedData?: any;
@@ -15,11 +15,11 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   const { convertedData } = props;
 
   const convertedRootData = useRecoilValue(rootConvertedState)
-  const checkList = useRecoilValue(checkboxState)
+  const [checkList, setCheckList] = useRecoilState(checkboxState)
   const {checkboxItems, setCheckboxItems} = checkList
   const [relatedRawData, setRelatedData] = useRecoilState(rawDataState)
   const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState)
-
+  
   const handleCheckFatherItem = (
     parentData: IConvertedData<any>,
     convertedData: IConvertedData<any>,
@@ -101,7 +101,6 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   };
 
   const handleCheckbox = (
-    // e: React.ChangeEvent<HTMLInputElement>,
     v: boolean,
     convertedData: IConvertedData<any>
   ) => {
@@ -110,7 +109,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
       typeof setCheckboxItems === "undefined"
     )
       return;
-    let newcheckboxItems = [...checkboxItems];
+    let newcheckboxItems = [...checkboxItems]
     //remove nested
     if (!v) {
       handleRemoveCheckbox(newcheckboxItems, convertedData);
@@ -165,8 +164,8 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   const onClickTreeItem = async (id?: string) => {
     if (!id || calledApiItems.includes(id)) return;
     const newDataApi = await relatedRawData.onGetRawData(id);
-    const concatRawDataWithDataAPI = relatedRawData.rawData.concat(newDataApi);
-    const newRawData = concatRawDataWithDataAPI.filter(
+    const concatRawDataWithDataAPI = relatedRawData.rawData?.concat(newDataApi);
+    const newRawData = concatRawDataWithDataAPI?.filter(
       (item: any, index: number, array: any[]) =>
         array.findIndex((t: any) => t.directoryId === item.directoryId) ===
         index
@@ -180,7 +179,6 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     newCalledApiItems.push(id);
     setCalledApiItems(newCalledApiItems);
   };
-
   return (
     <div>
       <TreeItem

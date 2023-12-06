@@ -8,9 +8,7 @@ import {
   calledApiState,
   checkboxState,
   labelTreeState,
-  onClickTreeState,
   rawDataState,
-  rootConvertedState,
   treeViewState,
 } from "../../../recoil/atom";
 
@@ -20,21 +18,19 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
   const {
     onConvertData,
     onGetRawData,
-    checkboxItems,
     defaultCollapseIcon,
     defaultExpandIcon,
     defaultExpanded,
     directoryActionComponents,
+    checkboxItems,
     setCheckboxItems,
     startIcon,
   } = props;
   const [, setTreeView] = useRecoilState(treeViewState);
   const [, setLabelTree] = useRecoilState(labelTreeState);
-  const [, setCheckbox] = useRecoilState(checkboxState);
-  const [rootData, setRootData] = useRecoilState(rootConvertedState);
+  const [checkbox, setCheckbox] = useRecoilState(checkboxState);
   const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
   const [relatedRawData, setRelatedRawData] = useRecoilState(rawDataState);
-  const [, setOnClickTree] = useRecoilState(onClickTreeState)
   
   useEffect(() => {
     const fetchAPI = async () => {
@@ -56,18 +52,15 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
       directoryActionComponents
     })
     setCheckbox({
-      checkboxItems,
-      setCheckboxItems
+      setCheckboxItems,
+      checkboxItems
     })
     setRelatedRawData({
-      onGetRawData,
-      rawData: []
+      onGetRawData
     })
-    // setOnClickTree(() => onClickTreeItem)
   }, []);
 
-  if(!relatedRawData.rawData.length) return null
-
+  if(!relatedRawData.rawData?.length) return null
   const convertedRootData = onConvertData(relatedRawData.rawData)?.[0]
   
   return (

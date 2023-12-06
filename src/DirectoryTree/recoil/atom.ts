@@ -27,7 +27,7 @@ type ILabelTreeState = {
 };
 
 type IRawDataState = {
-  rawData: IRawData[],
+  rawData?: IRawData[],
   onGetRawData: (id?: string) => Promise<IRawData | []>
 }
 
@@ -45,7 +45,7 @@ export const checkboxState = atom<ICheckbox>({
   key: CHECK_BOX_KEY,
   default: {
     checkboxItems: [],
-    setCheckboxItems: () => {},
+    setCheckboxItems: () => {}
   },
 });
 

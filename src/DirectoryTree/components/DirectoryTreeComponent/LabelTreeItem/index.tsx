@@ -3,13 +3,13 @@
 import { Checkbox, Typography } from "@material-ui/core";
 import React from "react";
 import { ILabelTreeItemProps } from "../../../interface";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { checkboxState, labelTreeState } from "../../../recoil/atom";
 
 const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   const { convertedData, handleCheckbox, isIndeterminate } = props;
-  const checkList = useRecoilValue(checkboxState);
-  const { checkboxItems, setCheckboxItems } = checkList;
+  const [checkList, setCheckList] = useRecoilState(checkboxState);
+  const {checkboxItems, setCheckboxItems} = checkList
   const labelTreeProps = useRecoilValue(labelTreeState)
   const {startIcon, directoryActionComponents} = labelTreeProps
 
@@ -22,8 +22,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
         gap: 10,
       }}
     >
-      {typeof checkboxItems !== "undefined" &&
-      typeof setCheckboxItems !== "undefined" ? (
+      {typeof checkboxItems !== "undefined"  ? (
         <Typography>
           <Checkbox
             onClick={(e) => e.stopPropagation()}
