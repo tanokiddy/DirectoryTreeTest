@@ -11,7 +11,6 @@ import {
 } from "../constants";
 import {
   IDirectoryActionComponentsProps,
-  ILabelTreeItemProps,
 } from "../interface";
 
 type ICheckbox = {

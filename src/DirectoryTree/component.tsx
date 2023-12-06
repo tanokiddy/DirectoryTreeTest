@@ -40,13 +40,12 @@ const handleConvertData = (
 
 export default function TreeViewTest() {
   const [checkboxItems, setCheckboxItems] = useState<string[]>([])
-  
+  console.time()
   const onGetRawData = async (id = "100") => {
     const res = await fetch(mockData[id]);
     const rawData = await res.json();
     return rawData.data;
   };
-
   return (
     <DirectoryTreeComponent
       onConvertData={handleConvertData}

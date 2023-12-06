@@ -1,11 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import LabelTreeItem from "../LabelTreeItem";
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import { TreeItem } from "@material-ui/lab";
 import { IConvertedData } from "../../../interface";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { calledApiState, checkboxState, rawDataState, rootConvertedState } from "../../../recoil/atom";
+import {
+  calledApiState,
+  checkboxState,
+  rawDataState,
+  rootConvertedState,
+} from "../../../recoil/atom";
 
 type RenderTreeItemProps = {
   convertedData?: any;
@@ -14,12 +19,12 @@ type RenderTreeItemProps = {
 const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   const { convertedData } = props;
 
-  const convertedRootData = useRecoilValue(rootConvertedState)
-  const [checkList, setCheckList] = useRecoilState(checkboxState)
-  const {checkboxItems, setCheckboxItems} = checkList
-  const [relatedRawData, setRelatedData] = useRecoilState(rawDataState)
-  const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState)
-  
+  const convertedRootData = useRecoilValue(rootConvertedState);
+  const [checkList, setCheckList] = useRecoilState(checkboxState);
+  const { checkboxItems, setCheckboxItems } = checkList;
+  const [relatedRawData, setRelatedData] = useRecoilState(rawDataState);
+  const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
+
   const handleCheckFatherItem = (
     parentData: IConvertedData<any>,
     convertedData: IConvertedData<any>,
@@ -55,7 +60,6 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
           arr.splice(idx, 1);
           handleCheckIndeterminate(convertedRootData, parentData, arr);
         }
-        // return;
       }
       handleCheckIndeterminate(parentDataChildren, convertedData, arr);
     });
@@ -93,23 +97,17 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
           arr.push(convertedDataChildren.directoryId);
           handleCheckNested(arr, convertedDataChildren);
         }
-        // else {
-        //   return;
-        // }
       }
     );
   };
 
-  const handleCheckbox = (
-    v: boolean,
-    convertedData: IConvertedData<any>
-  ) => {
+  const handleCheckbox = (v: boolean, convertedData: IConvertedData<any>) => {
     if (
       typeof checkboxItems === "undefined" ||
       typeof setCheckboxItems === "undefined"
     )
       return;
-    let newcheckboxItems = [...checkboxItems]
+    let newcheckboxItems = [...checkboxItems];
     //remove nested
     if (!v) {
       handleRemoveCheckbox(newcheckboxItems, convertedData);
@@ -140,7 +138,11 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   };
 
   const isIndeterminate = (convertedData: IConvertedData<any>): boolean => {
-    if (!convertedData.children || convertedData.children.length === 0 || checkboxItems === undefined) {
+    if (
+      !convertedData.children ||
+      convertedData.children.length === 0 ||
+      checkboxItems === undefined
+    ) {
       return false;
     }
 
@@ -161,7 +163,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     );
   };
 
-  const onClickTreeItem = async (id?: string) => {
+  const onClickTreeItem = (async (id?: string) => {
     if (!id || calledApiItems.includes(id)) return;
     const newDataApi = await relatedRawData.onGetRawData(id);
     const concatRawDataWithDataAPI = relatedRawData.rawData?.concat(newDataApi);
@@ -172,13 +174,13 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     );
     const newRelatedRawData = {
       ...relatedRawData,
-      rawData: newRawData
-    }
-    setRelatedData(newRelatedRawData)
+      rawData: newRawData,
+    };
+    setRelatedData(newRelatedRawData);
     const newCalledApiItems = [...calledApiItems];
     newCalledApiItems.push(id);
     setCalledApiItems(newCalledApiItems);
-  };
+  });
   return (
     <div>
       <TreeItem
