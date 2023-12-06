@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/prop-types */
 import { Checkbox, Typography } from "@material-ui/core";
 import React from "react";
 import { ILabelTreeItemProps } from "../../../interface";
@@ -8,6 +6,7 @@ import { checkboxState, labelTreeState } from "../../../recoil/atom";
 
 const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   const { convertedData, handleCheckbox, isIndeterminate } = props;
+  
   const [checkList, setCheckList] = useRecoilState(checkboxState);
   const {checkboxItems, setCheckboxItems} = checkList
   const labelTreeProps = useRecoilValue(labelTreeState)

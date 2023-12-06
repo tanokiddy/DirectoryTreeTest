@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/prop-types */
 import { FolderOpen } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { mockData } from "./utils";
 import DirectoryTreeComponent from "./components/DirectoryTreeComponent";
 import { IConvertedData } from "./interface";
@@ -40,7 +38,6 @@ const handleConvertData = (
 
 export default function TreeViewTest() {
   const [checkboxItems, setCheckboxItems] = useState<string[]>([])
-  console.time()
   const onGetRawData = async (id = "100") => {
     const res = await fetch(mockData[id]);
     const rawData = await res.json();

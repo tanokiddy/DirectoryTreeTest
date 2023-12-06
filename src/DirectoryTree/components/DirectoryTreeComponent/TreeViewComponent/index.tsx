@@ -79,11 +79,12 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
 
   if (!relatedRawData.rawData?.length) return null;
   const convertedRootData = onConvertData(relatedRawData.rawData)[0];
-
+  
   return (
     <TreeView
       defaultCollapseIcon={<ExpandMore />}
       defaultExpandIcon={<ChevronRight />}
+      defaultExpanded={defaultExpanded}
     >
       <RenderTreeItem convertedData={convertedRootData} />
     </TreeView>

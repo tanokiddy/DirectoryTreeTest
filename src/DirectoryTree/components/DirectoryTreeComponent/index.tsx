@@ -1,8 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-import React, { useEffect } from "react";
+import React from "react";
 import { IDirectoryTreeViewProps } from "../../interface";
 import { RecoilRoot } from "recoil";
 import { TreeViewComponent } from "./TreeViewComponent";

@@ -4,21 +4,19 @@ import {
   CALLED_API_KEY,
   CHECK_BOX_KEY,
   LABEL_TREE_KEY,
-  ONCLICK_TREE_KEY,
   RAW_DATA_KEY,
   ROOT_DATA_KEY,
   TREE_VIEW_KEY,
 } from "../constants";
 import {
+  IConvertedData,
   IDirectoryActionComponentsProps,
 } from "../interface";
 
-type ICheckbox = {
+type ICheckboxState = {
   checkboxItems?: string[];
   setCheckboxItems?: React.Dispatch<React.SetStateAction<string[]>>;
 };
-
-type IOnCLickTree = (id?: string) => Promise<void>;
 
 type ILabelTreeState = {
   startIcon?: JSX.Element;
@@ -30,7 +28,15 @@ type IRawDataState = {
   onGetRawData: (id?: string) => Promise<IRawData | []>
 }
 
-export const treeViewState = atom({
+type ITreeViewState = {
+  defaultExpandIcon?: JSX.Element
+  defaultCollapseIcon?: JSX.Element
+  defaultExpanded?: string[]
+}
+
+type ICalledApiState = string[]
+
+export const treeViewState = atom<ITreeViewState>({
   key: TREE_VIEW_KEY,
   default: {},
 });
@@ -40,7 +46,7 @@ export const labelTreeState = atom<ILabelTreeState>({
   default: {},
 });
 
-export const checkboxState = atom<ICheckbox>({
+export const checkboxState = atom<ICheckboxState>({
   key: CHECK_BOX_KEY,
   default: {
     checkboxItems: [],
@@ -48,12 +54,7 @@ export const checkboxState = atom<ICheckbox>({
   },
 });
 
-export const rootConvertedState = atom({
-  key: ROOT_DATA_KEY,
-  default: {},
-});
-
-export const calledApiState = atom<string[]>({
+export const calledApiState = atom<ICalledApiState>({
   key: CALLED_API_KEY,
   default: [],
 });
@@ -66,7 +67,7 @@ export const rawDataState = atom<IRawDataState>({
   },
 });
 
-export const onClickTreeState = atom<IOnCLickTree>({
-  key: ONCLICK_TREE_KEY,
-  default: async () => {}
+export const rootConvertedState = atom<IConvertedData<any>>({
+  key: ROOT_DATA_KEY,
+  default: {},
 });

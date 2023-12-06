@@ -1,4 +1,6 @@
 export type IConvertedData<T> = T & {
+  //nodeId: string
+  //name: string
   children?: IConvertedData<T>[] | [];
 };
 export type IDirectoryActionComponentsProps = {
@@ -13,7 +15,6 @@ export interface IDirectoryTreeViewProps<T> {
   directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
   checkboxItems?: string[];
   setCheckboxItems?: React.Dispatch<React.SetStateAction<string[]>>;
-  // onGetConvertedData: (id?: string) => T;
   onConvertData: (rawData?: any) => any;
   onGetRawData: (id?: string) => T;
 }

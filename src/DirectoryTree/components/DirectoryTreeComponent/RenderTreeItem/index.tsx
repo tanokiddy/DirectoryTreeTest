@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import LabelTreeItem from "../LabelTreeItem";
-import React, { useCallback } from "react";
+import React from "react";
 import { TreeItem } from "@material-ui/lab";
 import { IConvertedData } from "../../../interface";
 import { useRecoilState, useRecoilValue } from "recoil";
