@@ -3,8 +3,9 @@
 import LabelTreeItem from "../LabelTreeItem";
 import React from "react";
 import { TreeItem } from "@material-ui/lab";
-import { useDirectory } from "../../../contexts/DirectoryTreeContext/DirectoryTreeContext";
 import { IConvertedData } from "../../../interface";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { calledApiState, checkboxState, onClickTreeState, rawDataState, rootConvertedState } from "../../../recoil/atom";
 
 type RenderTreeItemProps = {
   convertedData?: any;
@@ -13,12 +14,11 @@ type RenderTreeItemProps = {
 const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   const { convertedData } = props;
 
-  const {
-    convertedRootData,
-    checkboxItems,
-    setCheckboxItems,
-    onClickTreeItem,
-  } = useDirectory();
+  const convertedRootData = useRecoilValue(rootConvertedState)
+  const checkList = useRecoilValue(checkboxState)
+  const {checkboxItems, setCheckboxItems} = checkList
+  const [relatedRawData, setRelatedData] = useRecoilState(rawDataState)
+  const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState)
 
   const handleCheckFatherItem = (
     parentData: IConvertedData<any>,
@@ -26,7 +26,6 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     arr: string[]
   ) => {
     if (!parentData || !convertedData || !parentData.children) return;
-
     const allChildrenChecked = parentData.children?.every((child: any) =>
       arr.includes(child.directoryId)
     );
@@ -127,7 +126,6 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     newcheckboxItems.push(convertedData.directoryId);
     handleCheckFatherItem(convertedRootData, convertedData, newcheckboxItems);
     setCheckboxItems(newcheckboxItems);
-
     if (!convertedData.children?.length) return;
     //add nested
     convertedData.children.forEach(
@@ -143,7 +141,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   };
 
   const isIndeterminate = (convertedData: IConvertedData<any>): boolean => {
-    if (!convertedData.children || convertedData.children.length === 0) {
+    if (!convertedData.children || convertedData.children.length === 0 || checkboxItems === undefined) {
       return false;
     }
 
@@ -162,6 +160,25 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     return (
       (someChildrenChecked && !allChildrenChecked) || someDescendantChecked
     );
+  };
+
+  const onClickTreeItem = async (id?: string) => {
+    if (!id || calledApiItems.includes(id)) return;
+    const newDataApi = await relatedRawData.onGetRawData(id);
+    const concatRawDataWithDataAPI = relatedRawData.rawData.concat(newDataApi);
+    const newRawData = concatRawDataWithDataAPI.filter(
+      (item: any, index: number, array: any[]) =>
+        array.findIndex((t: any) => t.directoryId === item.directoryId) ===
+        index
+    );
+    const newRelatedRawData = {
+      ...relatedRawData,
+      rawData: newRawData
+    }
+    setRelatedData(newRelatedRawData)
+    const newCalledApiItems = [...calledApiItems];
+    newCalledApiItems.push(id);
+    setCalledApiItems(newCalledApiItems);
   };
 
   return (

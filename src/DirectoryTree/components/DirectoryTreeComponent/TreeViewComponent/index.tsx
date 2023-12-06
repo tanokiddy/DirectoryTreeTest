@@ -1,19 +1,81 @@
 import { TreeView } from "@material-ui/lab";
-import React from "react";
+import React, { useEffect } from "react";
 import RenderTreeItem from "../RenderTreeItem";
 import { ChevronRight, ExpandMore } from "@material-ui/icons";
-import { useDirectory } from "../../../contexts/DirectoryTreeContext/DirectoryTreeContext";
+import { IDirectoryTreeViewProps } from "../../../interface";
+import { useRecoilState } from "recoil";
+import {
+  calledApiState,
+  checkboxState,
+  labelTreeState,
+  onClickTreeState,
+  rawDataState,
+  rootConvertedState,
+  treeViewState,
+} from "../../../recoil/atom";
 
-export default function TreeViewComponent() {
+export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
+  props
+) => {
+  const {
+    onConvertData,
+    onGetRawData,
+    checkboxItems,
+    defaultCollapseIcon,
+    defaultExpandIcon,
+    defaultExpanded,
+    directoryActionComponents,
+    setCheckboxItems,
+    startIcon,
+  } = props;
+  const [, setTreeView] = useRecoilState(treeViewState);
+  const [, setLabelTree] = useRecoilState(labelTreeState);
+  const [, setCheckbox] = useRecoilState(checkboxState);
+  const [rootData, setRootData] = useRecoilState(rootConvertedState);
+  const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
+  const [relatedRawData, setRelatedRawData] = useRecoilState(rawDataState);
+  const [, setOnClickTree] = useRecoilState(onClickTreeState)
+  
+  useEffect(() => {
+    const fetchAPI = async () => {
+      const rawData = await onGetRawData();
+      const newRawData = {rawData, onGetRawData}
+      setRelatedRawData(newRawData)
+      const newCalledApiItems = [...calledApiItems];
+      newCalledApiItems.push(rawData[0].directoryId);
+      setCalledApiItems(newCalledApiItems);
+    };
+    fetchAPI();
+    setTreeView({
+      defaultCollapseIcon,
+      defaultExpandIcon,
+      defaultExpanded
+    })
+    setLabelTree({
+      startIcon,
+      directoryActionComponents
+    })
+    setCheckbox({
+      checkboxItems,
+      setCheckboxItems
+    })
+    setRelatedRawData({
+      onGetRawData,
+      rawData: []
+    })
+    // setOnClickTree(() => onClickTreeItem)
+  }, []);
 
-    const { convertedRootData } = useDirectory()
+  if(!relatedRawData.rawData.length) return null
 
+  const convertedRootData = onConvertData(relatedRawData.rawData)?.[0]
+  
   return (
     <TreeView
       defaultCollapseIcon={<ExpandMore />}
       defaultExpandIcon={<ChevronRight />}
     >
-      <RenderTreeItem convertedData={convertedRootData}/>
+      <RenderTreeItem convertedData={convertedRootData} />
     </TreeView>
   );
-}
+};

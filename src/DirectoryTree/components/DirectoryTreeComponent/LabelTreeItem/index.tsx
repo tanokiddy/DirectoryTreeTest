@@ -2,19 +2,18 @@
 /* eslint-disable react/prop-types */
 import { Checkbox, Typography } from "@material-ui/core";
 import React from "react";
-import { IConvertedData, ILabelTreeItemProps } from "../../../interface";
-import { useDirectory } from "../../../contexts/DirectoryTreeContext/DirectoryTreeContext";
+import { ILabelTreeItemProps } from "../../../interface";
+import { useRecoilValue } from "recoil";
+import { checkboxState, labelTreeState } from "../../../recoil/atom";
 
 const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   const { convertedData, handleCheckbox, isIndeterminate } = props;
+  const checkList = useRecoilValue(checkboxState);
+  const { checkboxItems, setCheckboxItems } = checkList;
+  const labelTreeProps = useRecoilValue(labelTreeState)
+  const {startIcon, directoryActionComponents} = labelTreeProps
 
-  const {
-    startIcon,
-    directoryActionComponents,
-    checkboxItems,
-    setCheckboxItems,
-  } = useDirectory();
-
+  
   return (
     <div
       style={{
