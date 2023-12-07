@@ -1,5 +1,5 @@
 import { FolderOpen } from "@material-ui/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { mockData } from "./utils";
 import DirectoryTreeComponent from "./components/DirectoryTreeComponent";
 import { IConvertedData } from "./interface";
@@ -21,7 +21,6 @@ const handleConvertData = (
   parentId: string | null = input[0].parentDirectoryId
 ): IConvertedData[] => {
   const result: IConvertedData[] = [];
-
   for (let i = 0; i < input.length; i++) {
     const item = input[i];
     if (item.parentDirectoryId === parentId) {
@@ -43,19 +42,24 @@ const handleConvertData = (
 
 
 export default function TreeViewTest() {
-  const [checkboxItems, setCheckboxItems] = useState<string[]>([]);
-  const onGetRawData = async (id = "100") => {
-    const res = await fetch(mockData[id]);
-    const rawData = await res.json();
-    return rawData.data;
-  };
+  const [startCheckbox, setStartCheckbox] = useState<string[]>([]);
+  const [endCheckbox, setEndCheckbox] = useState<string[]>([])
+
+  const onGetConvertedData = async (id = "100") => {
+    const res = await fetch(mockData[id])
+    const rawData = await res.json()
+    const convertedData = handleConvertData(rawData.data)
+    return convertedData[0]
+  }
+  
   return (
     <DirectoryTreeComponent
-      onConvertData={handleConvertData}
-      onGetRawData={onGetRawData}
+      onGetConvertedData={onGetConvertedData}
       startIcon={<FolderOpen />}
-      setCheckboxItems={setCheckboxItems}
-      checkboxItems={checkboxItems}
+      setStartCheckbox={setStartCheckbox}
+      startCheckbox={startCheckbox}
+      endCheckbox={endCheckbox}
+      setEndCheckbox={setEndCheckbox}
     />
   );
 }

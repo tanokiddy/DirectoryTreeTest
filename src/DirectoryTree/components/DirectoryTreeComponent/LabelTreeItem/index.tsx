@@ -2,17 +2,27 @@ import { Checkbox, Typography } from "@material-ui/core";
 import React from "react";
 import { ILabelTreeItemProps } from "../../../interface";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { checkboxState, labelTreeState } from "../../../recoil/atom";
+import {
+  endCheckboxState,
+  labelTreeState,
+  startCheckboxState,
+} from "../../../recoil/atom";
 
 const LabelTreeItem = (props: ILabelTreeItemProps) => {
-  const { convertedData, handleCheckbox, isIndeterminate } = props;
-  
-  const [checkList, setCheckList] = useRecoilState(checkboxState);
-  const {checkboxItems, setCheckboxItems} = checkList
-  const labelTreeProps = useRecoilValue(labelTreeState)
-  const {startIcon, directoryActionComponents} = labelTreeProps
+  const {
+    convertedData,
+    handleStartCheckbox,
+    handleEndCheckbox,
+    isIndeterminate,
+  } = props;
 
-  
+  const checkboxStart = useRecoilValue(startCheckboxState);
+  const { startCheckbox } = checkboxStart;
+  const checkboxEnd = useRecoilValue(endCheckboxState);
+  const { endCheckbox } = checkboxEnd;
+  const labelTreeProps = useRecoilValue(labelTreeState);
+  const { startIcon, directoryActionComponents } = labelTreeProps;
+
   return (
     <div
       style={{
@@ -21,15 +31,15 @@ const LabelTreeItem = (props: ILabelTreeItemProps) => {
         gap: 10,
       }}
     >
-      {typeof checkboxItems !== "undefined"  ? (
+      {typeof startCheckbox !== "undefined" ? (
         <Typography>
           <Checkbox
             onClick={(e) => e.stopPropagation()}
             style={{ color: "unset" }}
             onChange={(e, v) => {
-              handleCheckbox(v, convertedData);
+              handleStartCheckbox(v, convertedData);
             }}
-            checked={checkboxItems.includes(convertedData.nodeId)}
+            checked={startCheckbox.includes(convertedData.nodeId)}
             indeterminate={
               convertedData.children !== undefined &&
               isIndeterminate(convertedData)
@@ -44,6 +54,16 @@ const LabelTreeItem = (props: ILabelTreeItemProps) => {
       {directoryActionComponents ? (
         <Typography style={{ width: 70, height: 40 }}>
           {directoryActionComponents}
+        </Typography>
+      ) : null}
+      {typeof endCheckbox !== "undefined" ? (
+        <Typography>
+          <Checkbox
+            onClick={(e) => e.stopPropagation()}
+            style={{ color: "unset" }}
+            onChange={() => handleEndCheckbox(convertedData.nodeId)}
+            checked={endCheckbox.includes(convertedData.nodeId)}
+          />
         </Typography>
       ) : null}
     </div>

@@ -6,53 +6,46 @@ import { IDirectoryTreeViewProps } from "../../../interface";
 import { useRecoilState } from "recoil";
 import {
   calledApiState,
-  checkboxState,
+  startCheckboxState,
+  convertDataFnState,
   labelTreeState,
-  rawDataState,
   rootConvertedState,
   treeViewState,
+  endCheckboxState,
 } from "../../../recoil/atom";
 
 export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
   props
 ) => {
   const {
-    onConvertData,
-    onGetRawData,
+    onGetConvertedData,
     defaultCollapseIcon,
     defaultExpandIcon,
     defaultExpanded,
     directoryActionComponents,
-    checkboxItems,
-    setCheckboxItems,
     startIcon,
+    startCheckbox,
+    setStartCheckbox,
+    endCheckbox,
+    setEndCheckbox
   } = props;
 
   const [, setTreeView] = useRecoilState(treeViewState);
   const [, setLabelTree] = useRecoilState(labelTreeState);
-  const [, setCheckbox] = useRecoilState(checkboxState);
+  const [, setCheckboxStart] = useRecoilState(startCheckboxState);
+  const [, setCheckboxEnd] = useRecoilState(endCheckboxState);
   const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
-  const [relatedRawData, setRelatedRawData] = useRecoilState(rawDataState);
-  const [, setConvertedRootData] = useRecoilState(rootConvertedState)
+  const [convertedRootData, setConvertedRootData] = useRecoilState(rootConvertedState)
+  const [convertDataFn, setConvertDataFn] = useRecoilState(convertDataFnState)
   
   useEffect(() => {
-    if(!relatedRawData.rawData?.length) return
-    setConvertedRootData(onConvertData(relatedRawData.rawData)[0])
-  },[relatedRawData.rawData])
-
-  useEffect(() => {
+    if(typeof onGetConvertedData === 'undefined') return
     const fetchAPI = async () => {
-      const rawData = await onGetRawData();
-      const newRawData = { rawData, onGetRawData };
-      setRelatedRawData(newRawData);
-      const newCalledApiItems = [...calledApiItems];
-      newCalledApiItems.push(rawData[0].nodeId);
-      setCalledApiItems(newCalledApiItems);
+      const convertedData = await onGetConvertedData()
+      setConvertedRootData(convertedData)
     };
     fetchAPI();
-    setRelatedRawData({
-      onGetRawData,
-    });
+    setConvertDataFn({onGetConvertedData})
   }, []);
 
   useEffect(() => {
@@ -63,11 +56,18 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
   }, [startIcon, directoryActionComponents]);
 
   useEffect(() => {
-    setCheckbox({
-      setCheckboxItems,
-      checkboxItems,
+    setCheckboxStart({
+      setStartCheckbox,
+      startCheckbox,
     });
-  }, [checkboxItems]);
+  }, [startCheckbox]);
+
+  useEffect(() => {
+    setCheckboxEnd({
+      setEndCheckbox,
+      endCheckbox,
+    });
+  }, [endCheckbox]);
 
   useEffect(() => {
     setTreeView({
@@ -77,8 +77,7 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
     });
   }, [defaultCollapseIcon, defaultExpandIcon, defaultExpanded]);
 
-  if (!relatedRawData.rawData?.length) return null;
-  const convertedRootData = onConvertData(relatedRawData.rawData)[0]
+  if (!convertedRootData?.nodeId) return null;
   
   return (
     <TreeView

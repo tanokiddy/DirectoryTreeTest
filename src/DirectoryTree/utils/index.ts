@@ -1,6 +1,6 @@
 import { IRawData } from "../component";
 import { IConvertedData } from "../interface";
-import { rawDirectory2_4, rawDirectoryAll } from "./rawDirectory";
+import { rawDirectory2_4, rawDirectory3_5, rawDirectoryAll } from "./rawDirectory";
 
 export * from "./rawDirectory";
 export * from "./dummy";
@@ -21,39 +21,42 @@ const handleConvertData = (
   parentId: string | null = input[0].parentDirectoryId
 ): IConvertedData[] => {
   const result: IConvertedData[] = [];
-
-  // Sử dụng vòng lặp for dạng for(let i = 0; i < array.length; i++)
-  console.log('input: ', input);
   for (let i = 0; i < input.length; i++) {
     const item = input[i];
-
-    // Kiểm tra xem phần tử có phải là con của parentId không
     if (item.parentDirectoryId === parentId) {
-      // Tạo một đối tượng mới để lưu trữ dữ liệu chuyển đổi
       const newItem: IConvertedData = {
-        nodeId: item.directoryId || item.objectTypeCode,
-        labelText: item.description || item.directoryPath,
-        order: item.level,
+        nodeId: item.directoryId,
+        labelText: item.name,
         level: item.level,
         isSystem: item.isSystem
       };
-
-      // Gọi đệ quy để xử lý các phần tử con
       const children = handleConvertData(input, item.directoryId);
-
-      // Nếu có phần tử con, thêm chúng vào đối tượng newItem
       if (children.length > 0) {
         newItem.children = children;
       }
-
-      // Thêm newItem vào mảng kết quả
       result.push(newItem);
     }
   }
-
-  // Trả về mảng kết quả sau khi lặp qua tất cả các phần tử
   return result;
 };
+
+function replaceChildren(object1, object2) {
+  // Kiểm tra xem nếu object1 và object2 có cùng directoryId
+  if (object1.nodeId === object2.nodeId) {
+      // Thay thế children của object1 bằng children của object2
+      object1.children = object2.children;
+      return;
+  }
+
+  // Nếu object1 có children, duyệt qua từng child và gọi đệ quy
+  if (object1.children && object1.children.length > 0) {
+      for (let i = 0; i < object1.children.length; i++) {
+          replaceChildren(object1.children[i], object2);
+      }
+  }
+}
+
+// Sử dụng hàm để thay thế children trong Object1 dựa trên trùng directoryId với Object2
   // else if (typeof input === "object") {
   //   const transformSchemaDetails = (schemaDetails) => {
   //     const result = [];

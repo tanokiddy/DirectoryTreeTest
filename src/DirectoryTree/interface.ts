@@ -6,23 +6,49 @@ export type IConvertedData = {
   isSystem?: boolean
   children?: IConvertedData[] | [];
 };
-// export type IDirectoryActionComponentsProps = {
-//   isSystem?: boolean;
-//   id?: number;
-// };
 export interface IDirectoryTreeViewProps {
-  startIcon?: JSX.Element;
   defaultCollapseIcon?: JSX.Element;
   defaultExpandIcon?: JSX.Element;
   defaultExpanded?: string[];
+  startIcon?: JSX.Element;
   directoryActionComponents?: React.FC;
-  checkboxItems?: string[];
-  setCheckboxItems?: React.Dispatch<React.SetStateAction<string[]>>;
-  onConvertData: (rawData?: any) => IConvertedData[];
-  onGetRawData: (id?: string) => any;
+  startCheckbox?: string[];
+  setStartCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
+  endCheckbox?: string[]
+  setEndCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
+  onGetConvertedData?: (nodeId?: string) => Promise<IConvertedData>
 }
 export type ILabelTreeItemProps = {
   convertedData: IConvertedData;
-  handleCheckbox: (v: boolean, convertedData: IConvertedData) => void;
+  handleStartCheckbox: (v: boolean, convertedData: IConvertedData) => void;
+  handleEndCheckbox: (nodeId: string) => void;
   isIndeterminate: (convertedData: IConvertedData) => boolean
 };
+
+
+export type IStartCheckboxState = {
+  startCheckbox?: string[];
+  setStartCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+export type IEndCheckboxState = {
+  endCheckbox?: string[];
+  setEndCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+export type ILabelTreeState = {
+  startIcon?: JSX.Element;
+  directoryActionComponents?: React.FC;
+};
+
+export type ITreeViewState = {
+  defaultExpandIcon?: JSX.Element
+  defaultCollapseIcon?: JSX.Element
+  defaultExpanded?: string[]
+}
+
+export type ICalledApiState = string[]
+
+export type IConvertDataFnState = {
+  onGetConvertedData: (id?: string) => Promise<IConvertedData | {}>
+}

@@ -1,40 +1,22 @@
-import { IRawData } from './../component';
 import { atom } from "recoil";
 import {
   CALLED_API_KEY,
-  CHECK_BOX_KEY,
+  CONVERT_DATA_FN_KEY,
+  END_CHECKBOX,
   LABEL_TREE_KEY,
-  RAW_DATA_KEY,
   ROOT_DATA_KEY,
+  START_CHECKBOX,
   TREE_VIEW_KEY,
 } from "../constants";
 import {
+  ICalledApiState,
+  IConvertDataFnState,
   IConvertedData,
-  IDirectoryActionComponentsProps,
+  IEndCheckboxState,
+  ILabelTreeState,
+  IStartCheckboxState,
+  ITreeViewState,
 } from "../interface";
-
-type ICheckboxState = {
-  checkboxItems?: string[];
-  setCheckboxItems?: React.Dispatch<React.SetStateAction<string[]>>;
-};
-
-type ILabelTreeState = {
-  startIcon?: JSX.Element;
-  directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
-};
-
-type IRawDataState = {
-  rawData?: IRawData[],
-  onGetRawData: (id?: string) => Promise<IRawData | []>
-}
-
-type ITreeViewState = {
-  defaultExpandIcon?: JSX.Element
-  defaultCollapseIcon?: JSX.Element
-  defaultExpanded?: string[]
-}
-
-type ICalledApiState = string[]
 
 export const treeViewState = atom<ITreeViewState>({
   key: TREE_VIEW_KEY,
@@ -46,11 +28,19 @@ export const labelTreeState = atom<ILabelTreeState>({
   default: {},
 });
 
-export const checkboxState = atom<ICheckboxState>({
-  key: CHECK_BOX_KEY,
+export const startCheckboxState = atom<IStartCheckboxState>({
+  key: START_CHECKBOX,
   default: {
-    checkboxItems: [],
-    setCheckboxItems: () => {}
+    startCheckbox: [],
+    setStartCheckbox: () => {},
+  },
+});
+
+export const endCheckboxState = atom<IEndCheckboxState>({
+  key: END_CHECKBOX,
+  default: {
+    endCheckbox: [],
+    setEndCheckbox: () => {},
   },
 });
 
@@ -59,15 +49,16 @@ export const calledApiState = atom<ICalledApiState>({
   default: [],
 });
 
-export const rawDataState = atom<IRawDataState>({
-  key: RAW_DATA_KEY,
+export const convertDataFnState = atom<IConvertDataFnState>({
+  key: CONVERT_DATA_FN_KEY,
   default: {
-    rawData: [],
-    onGetRawData: async () => []
+    onGetConvertedData: async () => {
+      return {};
+    },
   },
 });
 
-export const rootConvertedState = atom<IConvertedData<any>>({
+export const rootConvertedState = atom<IConvertedData>({
   key: ROOT_DATA_KEY,
-  default: {},
+  default: undefined,
 });
