@@ -159,7 +159,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     );
   };
 
-  function replaceChildren(object1, object2) {
+  const replaceChildren = (object1: IConvertedData, object2: IConvertedData) => {
     if (object1.nodeId === object2.nodeId) {
       const newObj1 = { ...object1 };
       newObj1.children = object2.children;
@@ -179,6 +179,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   const onClickTreeItem = async (id?: string) => {
     if (!id || calledApiItems.includes(id)) return;
     const newDataApi = await convertDataFn.onGetConvertedData(id);
+    if(!newDataApi) return
     const newRootConvertedData = replaceChildren(rootConvertedData, newDataApi);
     setRootConvertedData(newRootConvertedData);
     const newCalledApiItems = [...calledApiItems];
@@ -200,7 +201,6 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     }
     setEndCheckbox(newEndCheckbox)
   }
-  
 
   return (
     <div>

@@ -53,8 +53,11 @@ export const convertDataFnState = atom<IConvertDataFnState>({
   key: CONVERT_DATA_FN_KEY,
   default: {
     onGetConvertedData: async () => {
-      return {};
-    },
+      return {
+        nodeId: '',
+        labelText: ''
+      }
+    }
   },
 });
 

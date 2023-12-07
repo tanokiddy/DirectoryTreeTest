@@ -11,7 +11,7 @@ export interface IDirectoryTreeViewProps {
   defaultExpandIcon?: JSX.Element;
   defaultExpanded?: string[];
   startIcon?: JSX.Element;
-  directoryActionComponents?: React.FC;
+  actionComponents?: React.FC;
   startCheckbox?: string[];
   setStartCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
   endCheckbox?: string[]
@@ -26,6 +26,8 @@ export type ILabelTreeItemProps = {
 };
 
 
+
+//RECOIL ATOM TYPE
 export type IStartCheckboxState = {
   startCheckbox?: string[];
   setStartCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
@@ -50,5 +52,5 @@ export type ITreeViewState = {
 export type ICalledApiState = string[]
 
 export type IConvertDataFnState = {
-  onGetConvertedData: (id?: string) => Promise<IConvertedData | {}>
+  onGetConvertedData: (id?: string) => Promise<IConvertedData>
 }
