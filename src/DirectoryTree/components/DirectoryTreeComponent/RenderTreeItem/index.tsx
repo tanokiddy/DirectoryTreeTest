@@ -167,9 +167,10 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     const concatRawDataWithDataAPI = relatedRawData.rawData?.concat(newDataApi);
     const newRawData = concatRawDataWithDataAPI?.filter(
       (item: any, index: number, array: any[]) =>
-        array.findIndex((t: any) => t.nodeId === item.nodeId) ===
-        index
-    );
+      array.findIndex((t: any) => t.nodeId === item.nodeId) ===
+      index
+      );
+    console.log('newRawData: ', newRawData);
     const newRelatedRawData = {
       ...relatedRawData,
       rawData: newRawData,

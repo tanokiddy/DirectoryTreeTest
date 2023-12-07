@@ -34,7 +34,7 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
   const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
   const [relatedRawData, setRelatedRawData] = useRecoilState(rawDataState);
   const [, setConvertedRootData] = useRecoilState(rootConvertedState)
-
+  
   useEffect(() => {
     if(!relatedRawData.rawData?.length) return
     setConvertedRootData(onConvertData(relatedRawData.rawData)[0])
@@ -79,7 +79,6 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
 
   if (!relatedRawData.rawData?.length) return null;
   const convertedRootData = onConvertData(relatedRawData.rawData)[0]
-  console.log('convertedRootData: ', convertedRootData);
   
   return (
     <TreeView
