@@ -1,7 +1,7 @@
 import { FolderOpen } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { mockData } from "./utils";
-import DirectoryTreeComponent from "./components/DirectoryTreeComponent";
+import TreeContainer from "./components/TreeContainer";
 import { IConvertedData } from "./interface";
 
 export type IRawData = {
@@ -53,7 +53,7 @@ export default function TreeViewTest() {
   }
   
   return (
-    <DirectoryTreeComponent
+    <TreeContainer
       onGetConvertedData={onGetConvertedData}
       startIcon={<FolderOpen />}
       setStartCheckbox={setStartCheckbox}

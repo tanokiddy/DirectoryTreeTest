@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 // Hàm để tạo một node với các thuộc tính cần thiết
 function createNode(value, label, children = []) {

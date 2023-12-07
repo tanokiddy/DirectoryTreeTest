@@ -3,14 +3,12 @@ import React, { useEffect } from "react";
 import RenderTreeItem from "../RenderTreeItem";
 import { ChevronRight, ExpandMore } from "@material-ui/icons";
 import { IDirectoryTreeViewProps } from "../../../interface";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
-  calledApiState,
   startCheckboxState,
   convertDataFnState,
   labelTreeState,
   rootConvertedState,
-  treeViewState,
   endCheckboxState,
 } from "../../../recoil/atom";
 
@@ -22,7 +20,7 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
     defaultCollapseIcon,
     defaultExpandIcon,
     defaultExpanded,
-    directoryActionComponents,
+    actionComponents,
     startIcon,
     startCheckbox,
     setStartCheckbox,
@@ -30,13 +28,11 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
     setEndCheckbox
   } = props;
 
-  const [, setTreeView] = useRecoilState(treeViewState);
   const [, setLabelTree] = useRecoilState(labelTreeState);
   const [, setCheckboxStart] = useRecoilState(startCheckboxState);
   const [, setCheckboxEnd] = useRecoilState(endCheckboxState);
-  const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
   const [convertedRootData, setConvertedRootData] = useRecoilState(rootConvertedState)
-  const [convertDataFn, setConvertDataFn] = useRecoilState(convertDataFnState)
+  const setConvertDataFn = useSetRecoilState(convertDataFnState)
   
   useEffect(() => {
     if(typeof onGetConvertedData === 'undefined') return
@@ -51,9 +47,9 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
   useEffect(() => {
     setLabelTree({
       startIcon,
-      directoryActionComponents,
+      actionComponents,
     });
-  }, [startIcon, directoryActionComponents]);
+  }, [startIcon, actionComponents]);
 
   useEffect(() => {
     setCheckboxStart({
@@ -69,20 +65,12 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
     });
   }, [endCheckbox]);
 
-  useEffect(() => {
-    setTreeView({
-      defaultCollapseIcon,
-      defaultExpandIcon,
-      defaultExpanded,
-    });
-  }, [defaultCollapseIcon, defaultExpandIcon, defaultExpanded]);
-
   if (!convertedRootData?.nodeId) return null;
   
   return (
     <TreeView
-      defaultCollapseIcon={<ExpandMore />}
-      defaultExpandIcon={<ChevronRight />}
+      defaultCollapseIcon={defaultCollapseIcon || <ExpandMore />}
+      defaultExpandIcon={defaultExpandIcon || <ChevronRight />}
       defaultExpanded={defaultExpanded}
     >
       <RenderTreeItem convertedData={convertedRootData} />

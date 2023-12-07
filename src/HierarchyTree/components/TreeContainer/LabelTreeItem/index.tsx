@@ -1,7 +1,7 @@
+import React from 'react'
 import { Checkbox, Typography } from "@material-ui/core";
-import React from "react";
 import { ILabelTreeItemProps } from "../../../interface";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import {
   endCheckboxState,
   labelTreeState,
@@ -21,7 +21,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps) => {
   const checkboxEnd = useRecoilValue(endCheckboxState);
   const { endCheckbox } = checkboxEnd;
   const labelTreeProps = useRecoilValue(labelTreeState);
-  const { startIcon, directoryActionComponents } = labelTreeProps;
+  const { startIcon, actionComponents } = labelTreeProps;
 
   return (
     <div
@@ -51,9 +51,9 @@ const LabelTreeItem = (props: ILabelTreeItemProps) => {
         <Typography>{startIcon}</Typography>
         <Typography>{convertedData.labelText}</Typography>
       </div>
-      {directoryActionComponents ? (
+      {actionComponents ? (
         <Typography style={{ width: 70, height: 40 }}>
-          {directoryActionComponents}
+          {actionComponents}
         </Typography>
       ) : null}
       {typeof endCheckbox !== "undefined" ? (

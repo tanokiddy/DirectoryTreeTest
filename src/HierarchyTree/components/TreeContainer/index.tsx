@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 import { IDirectoryTreeViewProps } from "../../interface";
 import { RecoilRoot } from "recoil";
 import { TreeViewComponent } from "./TreeViewComponent";
 
-export default function DirectoryTreeComponent(
+export default function TreeContainer(
   props: IDirectoryTreeViewProps
 ) {
   return (

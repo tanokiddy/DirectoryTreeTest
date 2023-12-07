@@ -40,14 +40,8 @@ export type IEndCheckboxState = {
 
 export type ILabelTreeState = {
   startIcon?: JSX.Element;
-  directoryActionComponents?: React.FC;
+  actionComponents?: React.FC;
 };
-
-export type ITreeViewState = {
-  defaultExpandIcon?: JSX.Element
-  defaultCollapseIcon?: JSX.Element
-  defaultExpanded?: string[]
-}
 
 export type ICalledApiState = string[]
 

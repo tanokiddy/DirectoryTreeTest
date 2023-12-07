@@ -6,7 +6,6 @@ import {
   LABEL_TREE_KEY,
   ROOT_DATA_KEY,
   START_CHECKBOX,
-  TREE_VIEW_KEY,
 } from "../constants";
 import {
   ICalledApiState,
@@ -15,13 +14,7 @@ import {
   IEndCheckboxState,
   ILabelTreeState,
   IStartCheckboxState,
-  ITreeViewState,
 } from "../interface";
-
-export const treeViewState = atom<ITreeViewState>({
-  key: TREE_VIEW_KEY,
-  default: {},
-});
 
 export const labelTreeState = atom<ILabelTreeState>({
   key: LABEL_TREE_KEY,
