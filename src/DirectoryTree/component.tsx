@@ -13,31 +13,49 @@ export type IRawData = {
   objectTypeCode: string;
   directoryId: string;
   parentDirectoryId: string;
-  name: string;
-  order: number;
+  name:string
 };
 
 const handleConvertData = (
-  input: IConvertedData<any>[],
-  parentId = input?.[0].parentDirectoryId
-) => {
-  if (Array.isArray(input)) {
-    const result: IConvertedData<any>[] = [];
+  input: IRawData[],
+  parentId: string | null = input[0].parentDirectoryId
+): IConvertedData[] => {
+  const result: IConvertedData[] = [];
 
-    for (let i = 0; i < input.length; i++) {
-      if (input[i].parentDirectoryId === parentId) {
-        const newItem = { ...input[i] };
-        newItem.children = handleConvertData(input, newItem.directoryId);
+  // Sử dụng vòng lặp for dạng for(let i = 0; i < array.length; i++)
+  for (let i = 0; i < input.length; i++) {
+    const item = input[i];
 
-        result.push(newItem);
+    // Kiểm tra xem phần tử có phải là con của parentId không
+    if (item.parentDirectoryId === parentId) {
+      // Tạo một đối tượng mới để lưu trữ dữ liệu chuyển đổi
+      const newItem: IConvertedData = {
+        nodeId: item.directoryId,
+        labelText: item.name,
+        level: item.level,
+        isSystem: item.isSystem
+      };
+
+      // Gọi đệ quy để xử lý các phần tử con
+      const children = handleConvertData(input, item.directoryId);
+
+      // Nếu có phần tử con, thêm chúng vào đối tượng newItem
+      if (children.length > 0) {
+        newItem.children = children;
       }
+
+      // Thêm newItem vào mảng kết quả
+      result.push(newItem);
     }
-    return result;
   }
+
+  // Trả về mảng kết quả sau khi lặp qua tất cả các phần tử
+  return result;
 };
 
+
 export default function TreeViewTest() {
-  const [checkboxItems, setCheckboxItems] = useState<string[]>([])
+  const [checkboxItems, setCheckboxItems] = useState<string[]>([]);
   const onGetRawData = async (id = "100") => {
     const res = await fetch(mockData[id]);
     const rawData = await res.json();

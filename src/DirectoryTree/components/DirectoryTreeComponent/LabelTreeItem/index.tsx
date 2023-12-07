@@ -4,7 +4,7 @@ import { ILabelTreeItemProps } from "../../../interface";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { checkboxState, labelTreeState } from "../../../recoil/atom";
 
-const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
+const LabelTreeItem = (props: ILabelTreeItemProps) => {
   const { convertedData, handleCheckbox, isIndeterminate } = props;
   
   const [checkList, setCheckList] = useRecoilState(checkboxState);
@@ -29,7 +29,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
             onChange={(e, v) => {
               handleCheckbox(v, convertedData);
             }}
-            checked={checkboxItems.includes(convertedData.directoryId)}
+            checked={checkboxItems.includes(convertedData.nodeId)}
             indeterminate={
               convertedData.children !== undefined &&
               isIndeterminate(convertedData)
@@ -39,11 +39,11 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
       ) : null}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <Typography>{startIcon}</Typography>
-        <Typography>{convertedData.name}</Typography>
+        <Typography>{convertedData.labelText}</Typography>
       </div>
       {directoryActionComponents ? (
         <Typography style={{ width: 70, height: 40 }}>
-          {directoryActionComponents(convertedData.isSystem)}
+          {directoryActionComponents}
         </Typography>
       ) : null}
     </div>

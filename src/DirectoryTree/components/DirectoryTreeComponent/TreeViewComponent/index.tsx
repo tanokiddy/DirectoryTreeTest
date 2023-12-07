@@ -13,7 +13,7 @@ import {
   treeViewState,
 } from "../../../recoil/atom";
 
-export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
+export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
   props
 ) => {
   const {
@@ -46,7 +46,7 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
       const newRawData = { rawData, onGetRawData };
       setRelatedRawData(newRawData);
       const newCalledApiItems = [...calledApiItems];
-      newCalledApiItems.push(rawData[0].directoryId);
+      newCalledApiItems.push(rawData[0].nodeId);
       setCalledApiItems(newCalledApiItems);
     };
     fetchAPI();
@@ -78,7 +78,8 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
   }, [defaultCollapseIcon, defaultExpandIcon, defaultExpanded]);
 
   if (!relatedRawData.rawData?.length) return null;
-  const convertedRootData = onConvertData(relatedRawData.rawData)[0];
+  const convertedRootData = onConvertData(relatedRawData.rawData)[0]
+  console.log('convertedRootData: ', convertedRootData);
   
   return (
     <TreeView

@@ -24,19 +24,19 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
 
   const handleCheckFatherItem = (
-    parentData: IConvertedData<any>,
-    convertedData: IConvertedData<any>,
+    parentData: IConvertedData,
+    convertedData: IConvertedData,
     arr: string[]
   ) => {
     if (!parentData || !convertedData || !parentData.children) return;
     const allChildrenChecked = parentData.children?.every((child: any) =>
-      arr.includes(child.directoryId)
+      arr.includes(child.nodeId)
     );
 
-    parentData.children?.forEach((parentDataChildren: IConvertedData<any>) => {
-      if (parentDataChildren.directoryId === convertedData.directoryId) {
+    parentData.children?.forEach((parentDataChildren: IConvertedData) => {
+      if (parentDataChildren.nodeId === convertedData.nodeId) {
         if (allChildrenChecked) {
-          arr.push(parentData.directoryId);
+          arr.push(parentData.nodeId);
           handleCheckFatherItem(convertedRootData, parentData, arr);
         }
         // return;
@@ -46,14 +46,14 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   };
 
   const handleCheckIndeterminate = (
-    parentData: IConvertedData<any>,
-    convertedData: IConvertedData<any>,
+    parentData: IConvertedData,
+    convertedData: IConvertedData,
     arr: string[]
   ) => {
-    if (!parentData?.directoryId || !convertedData?.directoryId) return;
-    parentData.children?.forEach((parentDataChildren: IConvertedData<any>) => {
-      if (parentDataChildren.directoryId === convertedData.directoryId) {
-        const idx = arr.findIndex((item) => item === parentData.directoryId);
+    if (!parentData?.nodeId || !convertedData?.nodeId) return;
+    parentData.children?.forEach((parentDataChildren: IConvertedData) => {
+      if (parentDataChildren.nodeId === convertedData.nodeId) {
+        const idx = arr.findIndex((item) => item === parentData.nodeId);
         if (idx > -1) {
           arr.splice(idx, 1);
           handleCheckIndeterminate(convertedRootData, parentData, arr);
@@ -65,17 +65,17 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
 
   const handleRemoveCheckbox = (
     arr: string[],
-    convertedData: IConvertedData<any>
+    convertedData: IConvertedData
   ) => {
-    const idx = arr.findIndex((item) => item === convertedData.directoryId);
+    const idx = arr.findIndex((item) => item === convertedData.nodeId);
     if (idx > -1) {
       arr.splice(idx, 1);
     }
     if (!convertedData.children?.length) return;
     convertedData.children.forEach(
-      (convertedDataChildren: IConvertedData<any>) => {
+      (convertedDataChildren: IConvertedData) => {
         const idx = arr.findIndex(
-          (item) => item === convertedDataChildren.directoryId
+          (item) => item === convertedDataChildren.nodeId
         );
         if (idx > -1) {
           arr.splice(idx, 1);
@@ -87,19 +87,19 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
 
   const handleCheckNested = (
     arr: string[],
-    convertedData: IConvertedData<any>
+    convertedData: IConvertedData
   ) => {
     convertedData?.children?.forEach(
-      (convertedDataChildren: IConvertedData<any>) => {
-        if (!arr.includes(convertedDataChildren.directoryId)) {
-          arr.push(convertedDataChildren.directoryId);
+      (convertedDataChildren: IConvertedData) => {
+        if (!arr.includes(convertedDataChildren.nodeId)) {
+          arr.push(convertedDataChildren.nodeId);
           handleCheckNested(arr, convertedDataChildren);
         }
       }
     );
   };
 
-  const handleCheckbox = (v: boolean, convertedData: IConvertedData<any>) => {
+  const handleCheckbox = (v: boolean, convertedData: IConvertedData) => {
     if (
       typeof checkboxItems === "undefined" ||
       typeof setCheckboxItems === "undefined"
@@ -118,15 +118,15 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
       return;
     }
     //add
-    newcheckboxItems.push(convertedData.directoryId);
+    newcheckboxItems.push(convertedData.nodeId);
     handleCheckFatherItem(convertedRootData, convertedData, newcheckboxItems);
     setCheckboxItems(newcheckboxItems);
     if (!convertedData.children?.length) return;
     //add nested
     convertedData.children.forEach(
-      (convertedDataChildren: IConvertedData<any>) => {
-        if (!newcheckboxItems.includes(convertedDataChildren.directoryId)) {
-          newcheckboxItems.push(convertedDataChildren.directoryId);
+      (convertedDataChildren: IConvertedData) => {
+        if (!newcheckboxItems.includes(convertedDataChildren.nodeId)) {
+          newcheckboxItems.push(convertedDataChildren.nodeId);
           handleCheckNested(newcheckboxItems, convertedDataChildren);
         } else {
           return;
@@ -135,7 +135,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     );
   };
 
-  const isIndeterminate = (convertedData: IConvertedData<any>): boolean => {
+  const isIndeterminate = (convertedData: IConvertedData): boolean => {
     if (
       !convertedData.children ||
       convertedData.children.length === 0 ||
@@ -145,11 +145,11 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     }
 
     const allChildrenChecked = convertedData.children.every((child) =>
-      checkboxItems.includes(child.directoryId)
+      checkboxItems.includes(child.nodeId)
     );
 
     const someChildrenChecked = convertedData.children.some((child) =>
-      checkboxItems.includes(child.directoryId)
+      checkboxItems.includes(child.nodeId)
     );
 
     const someDescendantChecked = convertedData.children.some((child) =>
@@ -167,7 +167,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     const concatRawDataWithDataAPI = relatedRawData.rawData?.concat(newDataApi);
     const newRawData = concatRawDataWithDataAPI?.filter(
       (item: any, index: number, array: any[]) =>
-        array.findIndex((t: any) => t.directoryId === item.directoryId) ===
+        array.findIndex((t: any) => t.nodeId === item.nodeId) ===
         index
     );
     const newRelatedRawData = {
@@ -179,12 +179,13 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     newCalledApiItems.push(id);
     setCalledApiItems(newCalledApiItems);
   });
+  
   return (
     <div>
       <TreeItem
         style={{ userSelect: "none" }}
-        key={convertedData.directoryId}
-        nodeId={convertedData.directoryId}
+        key={convertedData.nodeId}
+        nodeId={convertedData.nodeId}
         label={
           <LabelTreeItem
             convertedData={convertedData}
@@ -194,7 +195,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
         }
         onClick={() => {
           typeof onClickTreeItem !== "undefined" &&
-            onClickTreeItem(convertedData.directoryId);
+            onClickTreeItem(convertedData.nodeId);
         }}
       >
         {Array.isArray(convertedData.children) &&
@@ -202,7 +203,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
           ? convertedData.children.map((convertedDataChildren: any) => {
               return (
                 <RenderTreeItem
-                  key={convertedDataChildren.directoryId}
+                  key={convertedDataChildren.nodeId}
                   convertedData={convertedDataChildren}
                 />
               );

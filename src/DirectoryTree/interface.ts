@@ -1,30 +1,28 @@
-export type IConvertedData<T> = T & {
-  //nodeId: string
-  //name: string
-  children?: IConvertedData<T>[] | [];
+export type IConvertedData = {
+  nodeId: string
+  labelText: string
+  order?: number
+  level?: number
+  isSystem?: boolean
+  children?: IConvertedData[] | [];
 };
-export type IDirectoryActionComponentsProps = {
-  isSystem?: boolean;
-  id?: number;
-};
-export interface IDirectoryTreeViewProps<T> {
+// export type IDirectoryActionComponentsProps = {
+//   isSystem?: boolean;
+//   id?: number;
+// };
+export interface IDirectoryTreeViewProps {
   startIcon?: JSX.Element;
   defaultCollapseIcon?: JSX.Element;
   defaultExpandIcon?: JSX.Element;
   defaultExpanded?: string[];
-  directoryActionComponents?: React.FC<IDirectoryActionComponentsProps>;
+  directoryActionComponents?: React.FC;
   checkboxItems?: string[];
   setCheckboxItems?: React.Dispatch<React.SetStateAction<string[]>>;
-  onConvertData: (rawData?: any) => any;
-  onGetRawData: (id?: string) => T;
+  onConvertData: (rawData?: any) => IConvertedData[];
+  onGetRawData: (id?: string) => any;
 }
-export type ILabelTreeItemProps<T> = {
-  convertedData?: T;
-  handleCheckbox: (v: boolean, convertedData: IConvertedData<any>) => void;
-  isIndeterminate: (convertedData: any) => boolean
+export type ILabelTreeItemProps = {
+  convertedData: IConvertedData;
+  handleCheckbox: (v: boolean, convertedData: IConvertedData) => void;
+  isIndeterminate: (convertedData: IConvertedData) => boolean
 };
-
-export type IHandleCheckBox<T> = (
-  e: React.ChangeEvent<HTMLInputElement>,
-  data: IConvertedData<T>
-) => void;

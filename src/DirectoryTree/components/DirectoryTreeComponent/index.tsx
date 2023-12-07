@@ -4,32 +4,11 @@ import { RecoilRoot } from "recoil";
 import { TreeViewComponent } from "./TreeViewComponent";
 
 export default function DirectoryTreeComponent(
-  props: IDirectoryTreeViewProps<any>
+  props: IDirectoryTreeViewProps
 ) {
-  const {
-    defaultCollapseIcon,
-    defaultExpandIcon,
-    defaultExpanded,
-    directoryActionComponents,
-    startIcon,
-    checkboxItems,
-    setCheckboxItems,
-    onGetRawData,
-    onConvertData,
-    ...rest
-  } = props;
-  
   return (
     <RecoilRoot>
-      <TreeViewComponent
-        startIcon={startIcon}
-        onGetRawData={onGetRawData}
-        onConvertData={onConvertData}
-        checkboxItems={checkboxItems}
-        setCheckboxItems={setCheckboxItems}
-        directoryActionComponents={directoryActionComponents}
-        {...rest}
-      />
+      <TreeViewComponent {...props} />
     </RecoilRoot>
   );
 }

@@ -1,4 +1,6 @@
+import { IRawData } from "../component";
 import { IConvertedData } from "../interface";
+import { rawDirectory2_4, rawDirectoryAll } from "./rawDirectory";
 
 export * from "./rawDirectory";
 export * from "./dummy";
@@ -14,26 +16,44 @@ export const mockData:IMockData = {
   '5036872129342215728': 'https://run.mocky.io/v3/6183c7dd-1d75-4fce-8379-d8fc93ca6d7a',//rawDirectory5_7
 }
 
-export const handleConvertData = (
-  input: IConvertedData<any>[],
-  parentId = input?.[0].parentDirectoryId
-) => {
-  if (Array.isArray(input)) {
-    const result: IConvertedData<any>[] = [];
+const handleConvertData = (
+  input: IRawData[],
+  parentId: string | null = input[0].parentDirectoryId
+): IConvertedData[] => {
+  const result: IConvertedData[] = [];
 
-    for (let i = 0; i < input.length; i++) {
-      if (input[i].parentDirectoryId === parentId) {
-        const newItem = { ...input[i] };
-        newItem.children = handleConvertData(
-          input,
-          newItem.directoryId
-        );
+  // Sử dụng vòng lặp for dạng for(let i = 0; i < array.length; i++)
+  console.log('input: ', input);
+  for (let i = 0; i < input.length; i++) {
+    const item = input[i];
 
-        result.push(newItem);
+    // Kiểm tra xem phần tử có phải là con của parentId không
+    if (item.parentDirectoryId === parentId) {
+      // Tạo một đối tượng mới để lưu trữ dữ liệu chuyển đổi
+      const newItem: IConvertedData = {
+        nodeId: item.directoryId || item.objectTypeCode,
+        labelText: item.description || item.directoryPath,
+        order: item.level,
+        level: item.level,
+        isSystem: item.isSystem
+      };
+
+      // Gọi đệ quy để xử lý các phần tử con
+      const children = handleConvertData(input, item.directoryId);
+
+      // Nếu có phần tử con, thêm chúng vào đối tượng newItem
+      if (children.length > 0) {
+        newItem.children = children;
       }
+
+      // Thêm newItem vào mảng kết quả
+      result.push(newItem);
     }
-    return result;
   }
+
+  // Trả về mảng kết quả sau khi lặp qua tất cả các phần tử
+  return result;
+};
   // else if (typeof input === "object") {
   //   const transformSchemaDetails = (schemaDetails) => {
   //     const result = [];
@@ -77,7 +97,6 @@ export const handleConvertData = (
 
   //   return data;
   // }
-};
 
 // const transformData = (data) => {
 //   const transformSchemaDetails = (schemaDetails) => {
