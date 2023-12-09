@@ -19,17 +19,12 @@ export type IRawData = {
 const handleConvertData = (
   input: IRawData[],
   parentId: string | null = input[0].parentDirectoryId
-): IConvertedData[] => {
-  const result: IConvertedData[] = [];
+): IConvertedData<IRawData>[] => {
+  const result: IConvertedData<IRawData>[] = [];
   for (let i = 0; i < input.length; i++) {
     const item = input[i];
     if (item.parentDirectoryId === parentId) {
-      const newItem: IConvertedData = {
-        nodeId: item.directoryId,
-        labelText: item.name,
-        level: item.level,
-        isSystem: item.isSystem
-      };
+      const newItem: IConvertedData<IRawData> = { ...item };
       const children = handleConvertData(input, item.directoryId);
       if (children.length > 0) {
         newItem.children = children;
@@ -51,9 +46,15 @@ export default function TreeViewTest() {
     const convertedData = handleConvertData(rawData.data)
     return convertedData[0]
   }
+  const onGetLabelName = (item: IConvertedData<IRawData>) => item.name
+  const onGetNodeId = (item: IConvertedData<IRawData>) => item.directoryId
+  const onGetLevel = (item: IConvertedData<IRawData>) => item.level
   
   return (
     <TreeContainer
+      onGetLabelName={onGetLabelName}
+      onGetLevel={onGetLevel}
+      onGetNodeId={onGetNodeId}
       onGetConvertedData={onGetConvertedData}
       startIcon={<FolderOpen />}
       setStartCheckbox={setStartCheckbox}

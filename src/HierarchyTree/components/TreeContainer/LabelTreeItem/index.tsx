@@ -3,12 +3,13 @@ import { Checkbox, Typography } from "@material-ui/core";
 import { ILabelTreeItemProps } from "../../../interface";
 import { useRecoilValue } from "recoil";
 import {
+  callbackFnState,
   endCheckboxState,
   labelTreeState,
   startCheckboxState,
 } from "../../../recoil/atom";
 
-const LabelTreeItem = (props: ILabelTreeItemProps) => {
+const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
   const {
     convertedData,
     handleStartCheckbox,
@@ -22,6 +23,8 @@ const LabelTreeItem = (props: ILabelTreeItemProps) => {
   const { endCheckbox } = checkboxEnd;
   const labelTreeProps = useRecoilValue(labelTreeState);
   const { startIcon, actionComponents } = labelTreeProps;
+  const callbackFn = useRecoilValue(callbackFnState)
+  const {onGetLabelName,onGetNodeId} = callbackFn
 
   return (
     <div
@@ -39,7 +42,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps) => {
             onChange={(e, v) => {
               handleStartCheckbox(v, convertedData);
             }}
-            checked={startCheckbox.includes(convertedData.nodeId)}
+            checked={startCheckbox.includes(onGetNodeId(convertedData))}
             indeterminate={
               convertedData.children !== undefined &&
               isIndeterminate(convertedData)
@@ -49,7 +52,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps) => {
       ) : null}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <Typography>{startIcon}</Typography>
-        <Typography>{convertedData.labelText}</Typography>
+        <Typography>{onGetLabelName(convertedData)}</Typography>
       </div>
       {actionComponents ? (
         <Typography style={{ width: 70, height: 40 }}>
@@ -61,8 +64,8 @@ const LabelTreeItem = (props: ILabelTreeItemProps) => {
           <Checkbox
             onClick={(e) => e.stopPropagation()}
             style={{ color: "unset" }}
-            onChange={() => handleEndCheckbox(convertedData.nodeId)}
-            checked={endCheckbox.includes(convertedData.nodeId)}
+            onChange={() => handleEndCheckbox(onGetNodeId(convertedData))}
+            checked={endCheckbox.includes(onGetNodeId(convertedData))}
           />
         </Typography>
       ) : null}

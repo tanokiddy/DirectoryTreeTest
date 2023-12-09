@@ -4,7 +4,7 @@ import { RecoilRoot } from "recoil";
 import { TreeViewComponent } from "./TreeViewComponent";
 
 export default function TreeContainer(
-  props: IDirectoryTreeViewProps
+  props: IDirectoryTreeViewProps<any>
 ) {
   return (
     <RecoilRoot>

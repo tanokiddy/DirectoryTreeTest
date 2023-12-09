@@ -10,9 +10,10 @@ import {
   labelTreeState,
   rootConvertedState,
   endCheckboxState,
+  callbackFnState,
 } from "../../../recoil/atom";
 
-export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
+export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
   props
 ) => {
   const {
@@ -25,23 +26,42 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
     startCheckbox,
     setStartCheckbox,
     endCheckbox,
-    setEndCheckbox
+    setEndCheckbox,
+    onGetLabelName,
+    onGetLevel,
+    onGetNodeId,
   } = props;
 
   const [, setLabelTree] = useRecoilState(labelTreeState);
   const [, setCheckboxStart] = useRecoilState(startCheckboxState);
   const [, setCheckboxEnd] = useRecoilState(endCheckboxState);
-  const [convertedRootData, setConvertedRootData] = useRecoilState(rootConvertedState)
-  const setConvertDataFn = useSetRecoilState(convertDataFnState)
-  
+  const [convertedRootData, setConvertedRootData] =
+    useRecoilState(rootConvertedState);
+  const setConvertDataFn = useSetRecoilState(convertDataFnState);
+  const setCallbackFn = useSetRecoilState(callbackFnState);
+
   useEffect(() => {
-    if(typeof onGetConvertedData === 'undefined') return
+    if (
+      typeof onGetLabelName === "undefined" ||
+      typeof onGetLevel === "undefined" ||
+      typeof onGetNodeId === "undefined"
+    )
+      return;
+    setCallbackFn({
+      onGetLabelName,
+      onGetLevel,
+      onGetNodeId,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (typeof onGetConvertedData === "undefined") return;
     const fetchAPI = async () => {
-      const convertedData = await onGetConvertedData()
-      setConvertedRootData(convertedData)
+      const convertedData = await onGetConvertedData();
+      setConvertedRootData(convertedData);
     };
     fetchAPI();
-    setConvertDataFn({onGetConvertedData})
+    setConvertDataFn({ onGetConvertedData });
   }, []);
 
   useEffect(() => {
@@ -65,8 +85,8 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps> = (
     });
   }, [endCheckbox]);
 
-  if (!convertedRootData?.nodeId) return null;
-  
+  if (!convertedRootData) return null;
+
   return (
     <TreeView
       defaultCollapseIcon={defaultCollapseIcon || <ExpandMore />}

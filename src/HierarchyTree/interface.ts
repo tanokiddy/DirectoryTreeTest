@@ -1,28 +1,32 @@
-export type IConvertedData = {
-  nodeId: string
-  labelText: string
-  order?: number
-  level?: number
-  isSystem?: boolean
-  children?: IConvertedData[] | [];
+export type IConvertedData<T> = T & {
+  children?: IConvertedData<T>[] | [];
 };
-export interface IDirectoryTreeViewProps {
-  defaultCollapseIcon?: JSX.Element;
-  defaultExpandIcon?: JSX.Element;
+export interface IDirectoryTreeViewProps<T> {
+  //OPTIONAL feature TreeView
+  defaultCollapseIcon?: React.ReactNode;
+  defaultExpandIcon?: React.ReactNode;
   defaultExpanded?: string[];
-  startIcon?: JSX.Element;
+  startIcon?: React.ReactNode;
+
+  //OPTIONAL feature TreeItem
   actionComponents?: React.FC;
   startCheckbox?: string[];
   setStartCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
   endCheckbox?: string[]
   setEndCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
-  onGetConvertedData?: (nodeId?: string) => Promise<IConvertedData>
+
+  //REQUIRED feature TreeContainer
+  onGetConvertedData?: (nodeId?: string) => Promise<IConvertedData<T>>
+  onGetLabelName?: (item?: IConvertedData<T>) => string
+  onGetNodeId?: (item?: IConvertedData<T>) => string
+  onGetLevel?: (item?: IConvertedData<T>) => number
 }
-export type ILabelTreeItemProps = {
-  convertedData: IConvertedData;
-  handleStartCheckbox: (v: boolean, convertedData: IConvertedData) => void;
+
+export type ILabelTreeItemProps<T> = {
+  convertedData: IConvertedData<T>;
+  handleStartCheckbox: (v: boolean, convertedData: IConvertedData<T>) => void;
   handleEndCheckbox: (nodeId: string) => void;
-  isIndeterminate: (convertedData: IConvertedData) => boolean
+  isIndeterminate: (convertedData: IConvertedData<T>) => boolean
 };
 
 
@@ -39,12 +43,18 @@ export type IEndCheckboxState = {
 };
 
 export type ILabelTreeState = {
-  startIcon?: JSX.Element;
+  startIcon?: React.ReactNode;
   actionComponents?: React.FC;
 };
 
 export type ICalledApiState = string[]
 
-export type IConvertDataFnState = {
-  onGetConvertedData: (id?: string) => Promise<IConvertedData>
+export type IConvertDataFnState<T> = {
+  onGetConvertedData: (id?: string) => Promise<IConvertedData<T>>
+}
+
+export type ICallbackFnState<T> = {
+  onGetLabelName: (item: T) => string
+  onGetNodeId: (item: T) => string
+  onGetLevel: (item: T) => number
 }
