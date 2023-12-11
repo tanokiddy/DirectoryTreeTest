@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Checkbox, Typography } from "@material-ui/core";
 import { ILabelTreeItemProps } from "../../../interface";
 import { useRecoilValue } from "recoil";
@@ -17,14 +17,10 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
     isIndeterminate,
   } = props;
 
-  const checkboxStart = useRecoilValue(startCheckboxState);
-  const { startCheckbox } = checkboxStart;
-  const checkboxEnd = useRecoilValue(endCheckboxState);
-  const { endCheckbox } = checkboxEnd;
-  const labelTreeProps = useRecoilValue(labelTreeState);
-  const { startIcon, actionComponents } = labelTreeProps;
-  const callbackFn = useRecoilValue(callbackFnState)
-  const {onGetLabelName,onGetNodeId} = callbackFn
+  const { startCheckbox } = useRecoilValue(startCheckboxState);
+  const { endCheckbox } = useRecoilValue(endCheckboxState);
+  const { startIcon, actionComponents } = useRecoilValue(labelTreeState);
+  const { onGetLabelName, onGetNodeId } = useRecoilValue(callbackFnState);
 
   return (
     <div
@@ -51,7 +47,7 @@ const LabelTreeItem = (props: ILabelTreeItemProps<any>) => {
         </Typography>
       ) : null}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-        <Typography>{startIcon}</Typography>
+        {startIcon && <Typography>{startIcon}</Typography>}
         <Typography>{onGetLabelName(convertedData)}</Typography>
       </div>
       {actionComponents ? (

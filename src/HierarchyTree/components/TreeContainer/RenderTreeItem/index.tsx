@@ -19,17 +19,15 @@ type RenderTreeItemProps = {
 const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
   const { convertedData } = props;
 
-  const convertedRootData = useRecoilValue(rootConvertedState);
-  const checkboxStart = useRecoilValue(startCheckboxState);
-  const { startCheckbox, setStartCheckbox } = checkboxStart;
   const [rootConvertedData, setRootConvertedData] =
     useRecoilState(rootConvertedState);
   const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
+  const convertedRootData = useRecoilValue(rootConvertedState);
   const convertDataFn = useRecoilValue(convertDataFnState);
-  const checkboxEnd = useRecoilValue(endCheckboxState);
-  const { endCheckbox, setEndCheckbox } = checkboxEnd;
-  const callbackFn = useRecoilValue(callbackFnState);
-  const { onGetNodeId } = callbackFn;
+  const { startCheckbox, setStartCheckbox } =
+    useRecoilValue(startCheckboxState);
+  const { endCheckbox, setEndCheckbox } = useRecoilValue(endCheckboxState);
+  const { onGetNodeId } = useRecoilValue(callbackFnState);
 
   const handleCheckFatherItem = (
     parentData: IConvertedData<{}>,
@@ -37,8 +35,8 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     arr: string[]
   ) => {
     if (!parentData || !convertedData || !parentData.children) return;
-    const allChildrenChecked = parentData.children?.every((child: any) =>
-      arr.includes(onGetNodeId(child))
+    const allChildrenChecked = parentData.children?.every(
+      (child: IConvertedData<{}>) => arr.includes(onGetNodeId(child))
     );
 
     parentData.children?.forEach((parentDataChildren: IConvertedData<{}>) => {
@@ -192,7 +190,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     return object1;
   };
 
-  const onClickTreeItem = async (id?: string) => {
+  const handleClickTreeItem = async (id?: string) => {
     if (!id || calledApiItems.includes(id)) return;
     const newDataApi = await convertDataFn.onGetConvertedData(id);
     if (!newDataApi) return;
@@ -237,8 +235,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
           />
         }
         onClick={() => {
-          typeof onClickTreeItem !== "undefined" &&
-            onClickTreeItem(onGetNodeId(convertedData));
+          handleClickTreeItem(onGetNodeId(convertedData))
         }}
       >
         {Array.isArray(convertedData.children) &&
