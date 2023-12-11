@@ -19,7 +19,6 @@ export interface IDirectoryTreeViewProps<T> {
   onGetConvertedData?: (nodeId?: string) => Promise<IConvertedData<T>>
   onGetLabelName?: (item?: IConvertedData<T>) => string
   onGetNodeId?: (item?: IConvertedData<T>) => string
-  onGetLevel?: (item?: IConvertedData<T>) => number
 }
 
 export type ILabelTreeItemProps<T> = {
@@ -56,5 +55,4 @@ export type IConvertDataFnState<T> = {
 export type ICallbackFnState<T> = {
   onGetLabelName: (item: T) => string
   onGetNodeId: (item: T) => string
-  onGetLevel: (item: T) => number
 }

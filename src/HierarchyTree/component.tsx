@@ -48,12 +48,10 @@ export default function TreeViewTest() {
   }
   const onGetLabelName = (item: IConvertedData<IRawData>) => item.name
   const onGetNodeId = (item: IConvertedData<IRawData>) => item.directoryId
-  const onGetLevel = (item: IConvertedData<IRawData>) => item.level
   
   return (
     <TreeContainer
       onGetLabelName={onGetLabelName}
-      onGetLevel={onGetLevel}
       onGetNodeId={onGetNodeId}
       onGetConvertedData={onGetConvertedData}
       startIcon={<FolderOpen />}

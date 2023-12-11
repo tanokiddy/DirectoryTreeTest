@@ -195,6 +195,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     const newDataApi = await convertDataFn.onGetConvertedData(id);
     if (!newDataApi) return;
     const newRootConvertedData = replaceChildren(rootConvertedData, newDataApi);
+    console.log('newRootConvertedData: ', newRootConvertedData);
     setRootConvertedData(newRootConvertedData);
     const newCalledApiItems = [...calledApiItems];
     newCalledApiItems.push(id);

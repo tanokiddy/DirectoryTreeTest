@@ -62,7 +62,6 @@ export const callbackFnState = atom<ICallbackFnState<any>>({
   key: CALLBACK_FN_KEY,
   default: {
     onGetLabelName: () => "",
-    onGetLevel: () => NaN,
     onGetNodeId: () => "",
   },
 });

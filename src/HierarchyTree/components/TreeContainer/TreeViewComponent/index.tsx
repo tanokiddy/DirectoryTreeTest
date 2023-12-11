@@ -28,7 +28,6 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
     endCheckbox,
     setEndCheckbox,
     onGetLabelName,
-    onGetLevel,
     onGetNodeId,
   } = props;
 
@@ -43,13 +42,11 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
   useEffect(() => {
     if (
       typeof onGetLabelName === "undefined" ||
-      typeof onGetLevel === "undefined" ||
       typeof onGetNodeId === "undefined"
     )
       return;
     setCallbackFn({
       onGetLabelName,
-      onGetLevel,
       onGetNodeId,
     });
   }, []);
