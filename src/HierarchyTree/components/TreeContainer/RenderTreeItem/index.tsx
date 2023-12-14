@@ -23,7 +23,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     useRecoilState(rootConvertedState);
   const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
   const convertedRootData = useRecoilValue(rootConvertedState);
-  const convertDataFn = useRecoilValue(convertDataFnState);
+  const { onGetConvertedData } = useRecoilValue(convertDataFnState);
   const { startCheckbox, setStartCheckbox } =
     useRecoilValue(startCheckboxState);
   const { endCheckbox, setEndCheckbox } = useRecoilValue(endCheckboxState);
@@ -192,10 +192,9 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
 
   const handleClickTreeItem = async (id?: string) => {
     if (!id || calledApiItems.includes(id)) return;
-    const newDataApi = await convertDataFn.onGetConvertedData(id);
+    const newDataApi = await onGetConvertedData(id);
     if (!newDataApi) return;
     const newRootConvertedData = replaceChildren(rootConvertedData, newDataApi);
-    console.log('newRootConvertedData: ', newRootConvertedData);
     setRootConvertedData(newRootConvertedData);
     const newCalledApiItems = [...calledApiItems];
     newCalledApiItems.push(id);
@@ -236,7 +235,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
           />
         }
         onClick={() => {
-          handleClickTreeItem(onGetNodeId(convertedData))
+          handleClickTreeItem(onGetNodeId(convertedData));
         }}
       >
         {Array.isArray(convertedData.children) &&
