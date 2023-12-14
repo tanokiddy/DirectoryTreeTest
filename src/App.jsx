@@ -1,9 +1,12 @@
 import './App.css'
-import TreeViewTest from './DirectoryTree/component'
+import TreeContainer from './HierarchyTree/container'
+// import TreeViewTest from './DirectoryTree/component'
+
 
 function App() {
   return (
-    <TreeViewTest/>
+    // <TreeViewTest/>
+    <TreeContainer/>
   )
 }
 
