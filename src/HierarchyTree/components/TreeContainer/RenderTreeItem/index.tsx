@@ -1,8 +1,8 @@
 import LabelTreeItem from "../LabelTreeItem";
 import React from "react";
 import { TreeItem } from "@material-ui/lab";
-import { IConvertedData } from "../../../interface";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { IConvertedData } from "AWING/HierarchyTree/interface";
 import {
   callbackFnState,
   calledApiState,
@@ -10,7 +10,7 @@ import {
   endCheckboxState,
   rootConvertedState,
   startCheckboxState,
-} from "../../../recoil/atom";
+} from "AWING/HierarchyTree/recoil/atom";
 
 type RenderTreeItemProps = {
   convertedData?: IConvertedData<any>;
@@ -23,7 +23,7 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
     useRecoilState(rootConvertedState);
   const [calledApiItems, setCalledApiItems] = useRecoilState(calledApiState);
   const convertedRootData = useRecoilValue(rootConvertedState);
-  const { onGetConvertedData } = useRecoilValue(convertDataFnState);
+  const convertDataFn = useRecoilValue(convertDataFnState);
   const { startCheckbox, setStartCheckbox } =
     useRecoilValue(startCheckboxState);
   const { endCheckbox, setEndCheckbox } = useRecoilValue(endCheckboxState);
@@ -192,9 +192,10 @@ const RenderTreeItem: React.FC<RenderTreeItemProps> = (props) => {
 
   const handleClickTreeItem = async (id?: string) => {
     if (!id || calledApiItems.includes(id)) return;
-    const newDataApi = await onGetConvertedData(id);
+    const newDataApi = await convertDataFn.onGetConvertedData(id);
     if (!newDataApi) return;
     const newRootConvertedData = replaceChildren(rootConvertedData, newDataApi);
+    console.log("newRootConvertedData: ", newRootConvertedData);
     setRootConvertedData(newRootConvertedData);
     const newCalledApiItems = [...calledApiItems];
     newCalledApiItems.push(id);

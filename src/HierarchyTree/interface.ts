@@ -9,26 +9,17 @@ export interface IDirectoryTreeViewProps<T> {
   startIcon?: React.ReactNode;
 
   //OPTIONAL feature TreeItem
-  actionComponents?: React.FC;
+  actionComponents?: (data?: IConvertedData<T>) => React.ReactNode;
   startCheckbox?: string[];
   setStartCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
-  endCheckbox?: string[]
+  endCheckbox?: string[];
   setEndCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
 
   //REQUIRED feature TreeContainer
-  onGetConvertedData?: (nodeId?: string) => Promise<IConvertedData<T>>
-  onGetLabelName?: (item?: IConvertedData<T>) => string
-  onGetNodeId?: (item?: IConvertedData<T>) => string
+  onGetConvertedData?: (nodeId?: string) => Promise<IConvertedData<T>>;
+  onGetLabelName?: (item?: IConvertedData<T>) => string;
+  onGetNodeId?: (item?: IConvertedData<T>) => string;
 }
-
-export type ILabelTreeItemProps<T> = {
-  convertedData: IConvertedData<T>;
-  handleStartCheckbox: (v: boolean, convertedData: IConvertedData<T>) => void;
-  handleEndCheckbox: (nodeId: string) => void;
-  isIndeterminate: (convertedData: IConvertedData<T>) => boolean
-};
-
-
 
 //RECOIL ATOM TYPE
 export type IStartCheckboxState = {
@@ -41,9 +32,9 @@ export type IEndCheckboxState = {
   setEndCheckbox?: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-export type ILabelTreeState = {
+export type ILabelTreeState<T> = {
   startIcon?: React.ReactNode;
-  actionComponents?: React.FC;
+  actionComponents?: (data?: IConvertedData<T>) => React.ReactNode;
 };
 
 export type ICalledApiState = string[]

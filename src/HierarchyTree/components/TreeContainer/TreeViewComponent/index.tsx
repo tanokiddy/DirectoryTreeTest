@@ -2,16 +2,16 @@ import { TreeView } from "@material-ui/lab";
 import React, { useEffect } from "react";
 import RenderTreeItem from "../RenderTreeItem";
 import { ChevronRight, ExpandMore } from "@material-ui/icons";
-import { IDirectoryTreeViewProps } from "../../../interface";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
-  startCheckboxState,
+  callbackFnState,
   convertDataFnState,
+  endCheckboxState,
   labelTreeState,
   rootConvertedState,
-  endCheckboxState,
-  callbackFnState,
-} from "../../../recoil/atom";
+  startCheckboxState,
+} from "AWING/HierarchyTree/recoil/atom";
+import { IDirectoryTreeViewProps } from "AWING/HierarchyTree/interface";
 
 export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
   props
@@ -40,11 +40,7 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
   const setCallbackFn = useSetRecoilState(callbackFnState);
 
   useEffect(() => {
-    if (
-      typeof onGetLabelName === "undefined" ||
-      typeof onGetNodeId === "undefined"
-    )
-      return;
+    if (!onGetLabelName || !onGetNodeId) return;
     setCallbackFn({
       onGetLabelName,
       onGetNodeId,
@@ -52,7 +48,7 @@ export const TreeViewComponent: React.FC<IDirectoryTreeViewProps<any>> = (
   }, []);
 
   useEffect(() => {
-    if (typeof onGetConvertedData === "undefined") return;
+    if (!onGetConvertedData) return;
     const fetchAPI = async () => {
       const convertedData = await onGetConvertedData();
       setConvertedRootData(convertedData);

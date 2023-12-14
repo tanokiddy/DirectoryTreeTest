@@ -18,7 +18,7 @@ import {
   IStartCheckboxState,
 } from "../interface";
 
-export const labelTreeState = atom<ILabelTreeState>({
+export const labelTreeState = atom<ILabelTreeState<{}>>({
   key: LABEL_TREE_KEY,
   default: {},
 });
